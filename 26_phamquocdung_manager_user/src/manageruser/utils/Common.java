@@ -84,11 +84,13 @@ public class Common {
 	 */
 	public static boolean checkLogin(HttpSession sess) throws Exception {
 		Tbl_UserDao userDao = new Tbl_UserDaoImpl();
-		if (sess.getAttribute("login_name") == null) {
+		Object sessionLoginName = sess.getAttribute("login_name");
+		
+		if (sessionLoginName == null || "".equals(sessionLoginName)) {
 			return false;
 		} else {
 			tbl_user user = new tbl_user();
-			String userName = sess.getAttribute("login_name").toString();
+			String userName = sessionLoginName.toString();
 			user = userDao.getTblUserByLoginName(userName);
 			if (user == null) {
 				return false;
@@ -106,6 +108,20 @@ public class Common {
 		return str1.equals(str2);
 	}
 	/**
+	 * calcular total page
+	 * @param totalUser tổng số user
+	 * @param limit sô record trên 1 page
+	 * @return int tổng số page
+	 */
+	public static int calcTotalPage(int totalUser, int limit) {
+		int totalPage = totalUser / limit;
+		float pageSurplus = totalUser % limit;
+		if (pageSurplus > 0) {
+			totalPage = totalPage + 1;
+		}
+		return totalPage;
+	}
+	/**
 	 * Tạo chuỗi paging
 	 * @param int totalUser tổng sô user
 	 * @param int limit số lượng cần hiển thị trên 1 trang
@@ -114,30 +130,20 @@ public class Common {
 	public static ArrayList<Integer> getListPaging(int totalUser, int limit, int currentPage) {
 		limit = Contants.LIMIT;
 		ArrayList<Integer> listPaging = new ArrayList<Integer>();
-		int totalPage = totalUser / limit;
-		float pageSurplus = totalUser % limit;
-		if (pageSurplus > 0) {
-			totalPage += totalPage;
-		}
+		int totalPage = calcTotalPage(totalUser, limit);
 		if (totalPage <= 3 || currentPage <= 3) {
 			for (int i = 1; i < 3; i++) {
 				listPaging.add(i);
 			}
-			if (totalPage >= 3 || (totalPage == 2 && pageSurplus > 0)) {
+			if (totalPage >= 3) {
 				listPaging.add(3);
 			}
 		} else {
 			int pageStart = 4;
-			int pageEnd = 4;
 			int pageShow = currentPage / 3;
 			int surPlus = currentPage % 3;
 			if (surPlus > 0) {
-				if (pageShow > 1) {
-					pageStart = (pageShow * 4) - 2;
-				}
-				else {
-					pageStart = pageShow * 4;
-				}
+				pageStart = (pageShow * 4) - (pageShow - 1);
 			} else {
 				pageStart = currentPage - 2;
 			}
@@ -146,7 +152,7 @@ public class Common {
 					listPaging.add(i);
 				}
 			} else {
-				for (int i = pageStart; i <= totalPage + 2; i++) {
+				for (int i = pageStart; i <= totalPage; i++) {
 					listPaging.add(i);
 				}
 			}
@@ -155,11 +161,14 @@ public class Common {
 
 		return listPaging;
 	}
+	/**
+	 * get vị trí bắt đầu hiển thị
+	 * @param currentPage page hiện tại
+	 * @param limit số page hiển thị trên 1 record
+	 * @return int vị trí hiển thị 
+	 */
 	public static int getOffset(int currentPage, int limit) {
 		limit = Contants.LIMIT;
-		if(currentPage == 1) {
-			return 1;
-		}
-		return ((currentPage-1) *  limit) + 1;
+		return ((currentPage - 1) *  limit) + 1;
 	}
 }

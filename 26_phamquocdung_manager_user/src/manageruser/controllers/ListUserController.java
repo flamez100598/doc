@@ -22,6 +22,7 @@ import manageruser.entities.UserInfo;
 import manageruser.entities.mst_group;
 import manageruser.utils.Common;
 import manageruser.utils.Contants;
+import manageruser.utils.MessageErrorProperties;
 
 /**
  * servlet get list user
@@ -43,23 +44,55 @@ public class ListUserController extends HttpServlet {
 			HttpSession session = req.getSession();
 			if ((Common.checkLogin(session))) {
 				String fullName = "";
+				String messError = "";
 				int groupId = 0;
-				if (req.getParameter("keyWord") != null) {
+				int offSet = Contants.OFFSET;
+				int currentPage = 1;
+				int limit = Contants.LIMIT;
+				if (req.getParameter("keyWord") != null && !"".equals(req.getParameter("keyWord"))) {
 					fullName = req.getParameter("keyWord");
 //					session.setAttribute("keyWord", fullName);
 				}
-				if (req.getParameter("group_id") != null) {
+				if (req.getParameter("group_id") != null && !"".equals(req.getParameter("group_id"))) {
 					groupId = Integer.parseInt(req.getParameter("group_id"));
 //					session.setAttribute("group_id", groupId);
 				}
-				int totalPage = tud.getTotalUser(groupId, fullName);
-				ArrayList<Integer> listPaging = Common.getListPaging(totalPage, 0, 10);
-				System.out.println(listPaging);
-				listAllGroup = mstGr.getAllGroup();
-				listUserInfo = tud.getListUser(0, 0, groupId, fullName, "", "", "", "");
-				req.setAttribute("listUserInfo", listUserInfo);
-				req.setAttribute("listAllGroup", listAllGroup);
-				req.getRequestDispatcher(Contants.FILE_JSP_PATH + "/ADM002.jsp").forward(req, resp);
+				if (req.getParameter("currentPage") != null && !"".equals(req.getParameter("currentPage"))) {
+					currentPage = Integer.parseInt(req.getParameter("currentPage"));
+//					session.setAttribute("group_id", groupId);
+				}
+				offSet = Common.getOffset(currentPage, limit);
+//				System.out.println("offset:"+offSet);
+				int totalUser = tud.getTotalUser(groupId, fullName);
+				if (totalUser == 0) {
+					messError = MessageErrorProperties.getValueByKey("MSG005");
+					req.setAttribute("messError", messError);
+				} else {
+					ArrayList<Integer> listPaging = Common.getListPaging(totalUser, 0, currentPage);
+					req.setAttribute("listPaging", listPaging);
+					System.out.println(listPaging);
+					System.out.println("total :"+totalUser);
+					int totalPage = Common.calcTotalPage(totalUser, limit);
+					System.out.println("total page:"+totalPage);
+					int maxInListPage = listPaging.get(listPaging.size() - 1);
+					int minInListPage = listPaging.get(0);
+					if (totalPage > maxInListPage) {
+						req.setAttribute("isEnableNext", maxInListPage + 1);
+					} else {
+						req.removeAttribute("isEnableNext");
+					}
+					if (maxInListPage > 3) {
+						req.setAttribute("isEnablePrev", minInListPage - 1);
+					} else {
+						req.removeAttribute("isEnablePrev");
+					}
+					listAllGroup = mstGr.getAllGroup();
+					listUserInfo = tud.getListUser(offSet, limit, groupId, fullName, "", "", "", "");
+					req.setAttribute("listUserInfo", listUserInfo);
+					req.setAttribute("listAllGroup", listAllGroup);
+					req.getRequestDispatcher(Contants.FILE_JSP_PATH + "/ADM002.jsp").forward(req, resp);
+				}
+				
 			} else {
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher(req.getContextPath() + "/logout.do");
 			}

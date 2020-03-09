@@ -20,7 +20,7 @@
 	}
 %>
 <body align="center">
-	<form action="./login.do" method="post">
+	<form action="${pageContext.request.contextPath}/login.do" method="post">
 		<center>
 
 			<table class="tbl_input" cellpadding="4" cellspacing="0"

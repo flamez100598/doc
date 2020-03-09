@@ -42,10 +42,11 @@ public class LoginFilter implements Filter {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
 			// Lấy về session
-			HttpSession httpSession = req.getSession(false);
+			HttpSession httpSession = req.getSession();
 			// Khởi tạo biến checkLogin kiểm tra user đã đăng nhập hay chưa
-			System.out.println(httpSession.getAttribute("login_name"));
 			boolean checkLogin = Common.checkLogin(httpSession);
+			System.out.println(checkLogin);
+//			boolean checkLogin = false;
 			// Khởi tạo biến contextPath
 			String contextPath = req.getContextPath();
 			// Khởi tạo biến loginUrl

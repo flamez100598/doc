@@ -100,7 +100,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
 				// query lấy giá trị login_name, pass, salt
-				String sql = "select count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id=mg.group_id;";
+				String sql = "select count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id = mg.group_id where tu.rule = 1;";
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql);
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
@@ -142,8 +142,6 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 */
 	@Override
 	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate) {
-		offset = Contants.OFFSET;
-		limit = Contants.LIMIT;
 		sortByFullName = Contants.ASC;
 		sortByCodeLevel = Contants.ASC;
 		sortByEndDate = Contants.DESC;

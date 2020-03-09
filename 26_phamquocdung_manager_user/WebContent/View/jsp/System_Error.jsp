@@ -16,7 +16,7 @@
 		<div>
 			<table>
 				<tr>
-					<td width="80%"><img src="../images/logo-manager-user.gifa"
+					<td width="80%"><img src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
 						alt="Luvina" />
 					<td>
 							<td align="left"><a href="ADM001.jsp">ログアウト</a> &nbsp; <a
@@ -30,7 +30,7 @@
 	<!-- End vung header -->
 
 	<!-- Begin vung input-->
-	<form action="ADM002.html" method="post" name="inputform">
+	<form action="${pageContext.request.contextPath}/listUser.do" method="post" name="inputform">
 		<table class="tbl_input" border="0" width="80%" cellpadding="0"
 			cellspacing="0">
 			<tr>

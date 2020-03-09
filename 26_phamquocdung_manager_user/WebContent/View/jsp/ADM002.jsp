@@ -14,7 +14,7 @@
 </head>
 <%
 	String keyWord = request.getParameter("keyWord");
-	if (keyWord != null && !"".equals(keyWord)) {
+	if (keyWord != null) {
 		request.getSession().setAttribute("keyWord", keyWord);
 	} else {
 		keyWord = "";
@@ -25,6 +25,13 @@
 		groupId = Integer.parseInt(grId);
 		request.getSession().setAttribute("group_id", keyWord);
 	}
+	int numbNext = 0, numbPrev = 0;
+	if (request.getAttribute("isEnableNext") != null) {
+		numbNext = Integer.parseInt(request.getAttribute("isEnableNext").toString());
+	} 
+	if (request.getAttribute("isEnablePrev") != null) {
+		numbPrev = Integer.parseInt(request.getAttribute("isEnablePrev").toString());
+	} 
 %>
 <body>
 	<!-- Begin vung header -->
@@ -32,7 +39,8 @@
 		<div>
 			<table>
 				<tr>
-					<td width="80%"><img src="../images/logo-manager-user.gif"
+					<td width="80%"><img
+						src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
 						alt="Luvina" />
 						<td>
 							<td align="left"><a
@@ -75,7 +83,7 @@
 									<c:forEach items="${listAllGroup}" var="item">
 										<c:if test="${item.group_id eq groupId}">
 											<option value="${item.group_id}" selected><c:out
-												value="${item.group_name}" /></option>
+													value="${item.group_name}" /></option>
 										</c:if>
 										<option value="${item.group_id}"><c:out
 												value="${item.group_name}" /></option>
@@ -128,8 +136,19 @@
 	<!-- Begin vung paging -->
 	<table>
 		<tr>
-			<td class="lbl_paging"><a href="#">1</a> &nbsp;<a href="#">2</a>
-				&nbsp;<a href="#">3</a>&nbsp;<a href="#">>></a></td>
+		<c:set var="numbPre" value="<%=numbPrev%>" scope="request"></c:set>
+		<td><c:if test="${numbPre != 0}"><a
+					href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=<%=numbPrev%>"><<</a></td></c:if>
+			<c:forEach items="${listPaging}" var="item">
+				<td class="lbl_paging"><a
+					href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=${item}"><c:out
+							value="${item}" /></a> &nbsp;</td>
+			</c:forEach>
+		<td>
+		<c:set var="numbNext" value="<%=numbNext%>" scope="request"></c:set>
+		<c:if test="${numbNext != 0 }">
+		<a href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=<%=numbNext%>">>></a></td>
+		</c:if>
 		</tr>
 	</table>
 	<!-- End vung paging -->
