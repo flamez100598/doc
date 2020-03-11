@@ -30,7 +30,7 @@ public class LogoutController extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("Class: LogoutController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath()+ "/" + Contants.FILE_JSP_PATH + Contants.URL_ERROR);
+			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
 		}
 	}
 }

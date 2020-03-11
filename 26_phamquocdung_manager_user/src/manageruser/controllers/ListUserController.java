@@ -43,7 +43,8 @@ public class ListUserController extends HttpServlet {
 			MstGroupDao mstGr = new MstGroupDaoImpl();
 			HttpSession session = req.getSession();
 			if ((Common.checkLogin(session))) {
-				String fullName = "";
+				String fullName = req.getParameter("keyWord");
+				System.out.println(Integer.parseInt(req.getParameter("group_id")));
 				String messError = "";
 				int groupId = 0;
 				int offSet = Contants.OFFSET;
@@ -90,16 +91,17 @@ public class ListUserController extends HttpServlet {
 					listUserInfo = tud.getListUser(offSet, limit, groupId, fullName, "", "", "", "");
 					req.setAttribute("listUserInfo", listUserInfo);
 					req.setAttribute("listAllGroup", listAllGroup);
-					req.getRequestDispatcher(Contants.FILE_JSP_PATH + "/ADM002.jsp").forward(req, resp);
+					req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM002).forward(req, resp);
 				}
 				
 			} else {
-				RequestDispatcher requestDispatcher = req.getRequestDispatcher(req.getContextPath() + "/logout.do");
+				RequestDispatcher requestDispatcher = req.getRequestDispatcher(req.getContextPath() + Contants.URL_LOGOUT);
 			}
 		} catch (Exception e) {
 			System.out.println("Class: ListUserController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath() +"/"+ Contants.FILE_JSP_PATH + Contants.URL_ERROR);
+//			RequestDispatcher requestDispatcher = req.getRequestDispatcher(req.getContextPath() + Contants.URL_ERROR_DO);
+			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
 		}
 	}
 	/**
@@ -113,7 +115,7 @@ public class ListUserController extends HttpServlet {
 		} catch (Exception e) {
 			System.out.println("Class: ListUserController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath()+ "/" + Contants.FILE_JSP_PATH + Contants.URL_ERROR);
+			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
 		}
 	}
 }

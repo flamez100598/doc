@@ -7,6 +7,14 @@
 	<session-config>
 		<session-timeout>5</session-timeout>
 	</session-config>
+		<servlet>
+		<servlet-name>system_error</servlet-name>
+		<servlet-class>manageruser.controllers.SystemErrorController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>system_error</servlet-name>
+		<url-pattern>/error.do</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>login</servlet-name>
 		<servlet-class>manageruser.controllers.LoginController</servlet-class>

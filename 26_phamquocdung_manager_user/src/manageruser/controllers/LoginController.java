@@ -85,15 +85,15 @@ public class LoginController extends HttpServlet {
 	         // kiểm tra nếu  thỏa mãn điều kiện chuyển hướng 
 	    	} else {
 	    		// điều hướng đến servlet ADM002
-	        	RequestDispatcher requestDispatcher = req.getRequestDispatcher("./listUser.do");
-	        	// truyền response cho ADM002
-	            requestDispatcher.forward(req, resp);
+	    		resp.sendRedirect(req.getContextPath() + "/listUser.do");
+//	        	// truyền response cho ADM002
+//	            requestDispatcher.forward(req, resp);
 	    	}
 
 		} catch (Exception e) {
 			System.out.println("Class: LoginController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath()+ "/" + Contants.FILE_JSP_PATH + Contants.URL_ERROR);
+			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
 		}
 	}
 }
