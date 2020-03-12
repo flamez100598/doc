@@ -1,5 +1,6 @@
 /**
- * 
+ *  Copy right (C) 2020 Luvina
+ * LogoutController.java, Feb 26, 2020 DungPham
  */
 package manageruser.dao.impl;
 
@@ -14,11 +15,14 @@ import manageruser.dao.MstGroupDao;
 import manageruser.entities.mst_group;
 
 /**
- * @author Admin
+ * Cài đặt lớp mst group dao 
+ * @author DungPham
  *
  */
 public class MstGroupDaoImpl extends BaseDAOImpl implements MstGroupDao {
-
+	/**
+	 * @return list group
+	 */
 	@Override
 	public ArrayList<mst_group> getAllGroup() {
 		ArrayList<mst_group> listGroup = new ArrayList<mst_group>();
@@ -43,9 +47,40 @@ public class MstGroupDaoImpl extends BaseDAOImpl implements MstGroupDao {
 			System.out.println("Loi:" + e.getMessage());
 			throw e;
 		} finally {
+			closeConnect();
 			return listGroup;
 		}
-
 	}
-
+	/**
+	 * get group by id
+	 * @param grId id group need to get
+	 * @return mst_group
+	 */
+	public mst_group getMstGroupById(int grId) {
+		mst_group mstGr = null;
+		try {
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {			
+				mstGr = new mst_group();
+				String sql = "SELECT group_id, group_name FROM mst_group WHERE group_id = ?;";
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(0, grId);
+				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
+				ResultSet rs = ps.executeQuery();
+				while (rs.next()) {
+					mstGr.setGroup_id(rs.getInt("group_id"));
+					mstGr.setGroup_name(rs.getString("group_name"));
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Loi:" + e.getMessage());
+			throw e;
+		} finally {
+			closeConnect();
+			return mstGr;
+		}
+	}
 }

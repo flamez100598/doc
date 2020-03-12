@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -16,12 +16,13 @@
 		<div>
 			<table>
 				<tr>
-					<td width="80%"><img src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
+					<td width="80%"><img
+						src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
 						alt="Luvina" />
-					<td>
+						<td>
 							<td align="left"><a href="ADM001.jsp">ログアウト</a> &nbsp; <a
 								href="ADM002.html">トップ</a>
-							<td>
+								<td>
 				</tr>
 			</table>
 		</div>
@@ -30,7 +31,8 @@
 	<!-- End vung header -->
 
 	<!-- Begin vung input-->
-	<form action="${pageContext.request.contextPath}/listUser.do" method="post" name="inputform">
+	<form action="${pageContext.request.contextPath}/listUser.do"
+		method="post" name="inputform">
 		<table class="tbl_input" border="0" width="80%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -39,8 +41,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="2"><font color="red">Hiện
-						thị câu thông báo lỗi ở đây.</font></td>
+				<td align="center" colspan="2"><font color="red">${errorSystem}</font></td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">

@@ -1,12 +1,14 @@
 /**
- * 
+ *  Copy right (C) 2020 Luvina
+ * tbl_user.java, Feb 23, 2020 DungPham
  */
 package manageruser.entities;
 
 import java.util.Date;
 
 /**
- * @author Admin
+ * Lớp để lưu trữ thông tin nhân viên
+ * @author DungPham
  *
  */
 public class UserInfo {

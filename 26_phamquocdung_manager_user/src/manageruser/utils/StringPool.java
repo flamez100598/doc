@@ -5,7 +5,7 @@
 package manageruser.utils;
 
 /**
- * Description
+ * Contants type of String
  * @author DungPham
  *
  */

@@ -1,6 +1,6 @@
 /**
  *  Copy right (C) 2020 Luvina
- * MessageErrorProperties.java, Feb 24, 2020 DungPham
+ * PagingProperties.java, Feb 24, 2020 DungPham
  */
 package manageruser.utils;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * get list error properties from file error
+ * get Paging Properties
  * @author DungPham
  *
  */

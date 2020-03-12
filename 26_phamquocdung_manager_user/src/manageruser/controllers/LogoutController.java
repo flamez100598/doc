@@ -22,15 +22,20 @@ import manageruser.utils.Contants;
 public class LogoutController extends HttpServlet {
 	// overright 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+		String contextPath = req.getContextPath();
 		try {
 			HttpSession session = req.getSession();
 			session.removeAttribute("login_name");
-			resp.sendRedirect(req.getContextPath());
+			resp.sendRedirect(contextPath);
 		} catch (Exception e) {
 			System.out.println("Class: LogoutController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
+			try {
+				resp.sendRedirect(contextPath + Contants.URL_ERROR_DO);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

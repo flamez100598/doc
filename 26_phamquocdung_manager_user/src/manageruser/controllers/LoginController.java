@@ -28,14 +28,13 @@ import manageruser.validates.loginValidate;
  *
  */
 public class LoginController extends HttpServlet {
-	// khai báo biến tbl_uli
-	Tbl_UserLogic tbl_uli;
 	/**
 	 * action Login when submit form login
 	 * 
 	 */ 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+		String contextPath = req.getContextPath();
 		try {
 			// gắn biến username để lấy dữ liệu loginname từ form
 			String username = req.getParameter("loginName");
@@ -48,52 +47,40 @@ public class LoginController extends HttpServlet {
 			// biến check trường hợp nhập sai tên đăng nhập hoặc mật khẩu
 			boolean checkRedirect = false;
 			// khởi tạo biến lưu message
-			String messError = "";
+			ArrayList<String> listMessError = new ArrayList<String>();
 			// kiểm tra biến nhập user va password chưa
-			messError = loginValidate.checkNullOrEmpty(username, password);
+			listMessError = loginValidate.checkNullOrEmpty(username, password);
 			// kiểm tra nhập các trường dữ liệu trong textbox chưa
-	    	if ("".equals(messError)) {
-	    		// bắt lỗi execption
-	    		try {
-	    			// khởi tạo giá trị cho biến tbl_uli
-	        		tbl_uli = new Tbl_UserLogicImpl();
-	        		// kiểm tra nếu có tài khoản trong db
-	        		if(tbl_uli.existLogin(username, password)) {
-	        			// gắn biến redirect = true
-	        			checkRedirect = true;
-	        			// set sesion cho login_user
-	        			session.setAttribute("login_name", username);
-	        		}
-	        		// kiểm tra nếu tài khoản k tồn tại trong db
-	        		else {
-	        			// gắn message từ file MessageError.Properties
-	        			messError = MessageErrorProperties.getValueByKey("ER016");
-	        		}
-	    		} catch (Exception e) {
-	    			// in ra lỗi nếu có ngoại lệ
-	    			System.out.println(e.getMessage());
-	    		}
+	    	if (listMessError.isEmpty()) {
+    			// gắn biến redirect = true
+    			checkRedirect = true;
+    			// set sesion cho login_user
+    			session.setAttribute("login_name", username);
+	    	} else {
+		    	// set attribute cho lỗi để hiển thị ra JSP
+		    	req.setAttribute("messageError", listMessError);
+		    	System.out.println(listMessError.get(0));
 	    	}
-	    	// set attribute cho lỗi để hiển thị ra JSP
-	    	req.setAttribute("messageError", messError);
 	    	// kiểm tra nếu k thỏa mãn điều kiện chuyển hướng 
 	    	if (!checkRedirect) {
 	    		// điều hướng lại trang ADM001 
-	        	RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + "/ADM001.jsp");
+	        	RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM001);
 	        	// truyền response cho ADM001
 	            requestDispatcher.forward(req, resp);
 	         // kiểm tra nếu  thỏa mãn điều kiện chuyển hướng 
 	    	} else {
-	    		// điều hướng đến servlet ADM002
-	    		resp.sendRedirect(req.getContextPath() + "/listUser.do");
-//	        	// truyền response cho ADM002
-//	            requestDispatcher.forward(req, resp);
+	    		// điều hướng đến servlet ADM002 và truyền response cho ADM002
+	    		resp.sendRedirect(contextPath + Contants.URL_LIST_USER);
 	    	}
 
 		} catch (Exception e) {
 			System.out.println("Class: LoginController: " + e.getMessage());
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
+			try {
+				resp.sendRedirect(contextPath + Contants.URL_ERROR_DO);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

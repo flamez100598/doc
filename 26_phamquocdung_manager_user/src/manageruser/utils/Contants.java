@@ -32,6 +32,8 @@ public class Contants {
 	public static final String URL_LIST_USER = "/listUser.do";
 	// file path  System_Error.jsp
 	public static final String URL_ERROR_PAGE = "/System_Error.jsp";
+	// file path addEdit.do 
+	public static final String ADD_EDIT_FORM_URL = "/addEdit.do";
 	// file path database properties
 	public static final String PROPERTIES_DATABASE_PATH = "Database.properties";
 	// file path message error properties
@@ -41,9 +43,19 @@ public class Contants {
 	// define limit
 	public static final int LIMIT = Integer.parseInt(PagingProperties.getValueByKey("limit"));
 	// set offset 
-	public static final int OFFSET = 1;
+	public static final int OFFSET_DEFAULT = 1;
 	// sort tăng dần
 	public static final String ASC = "ASC";
 	// sort giảm dần
 	public static final String DESC = "DESC";
+	// list sort 
+	public static final String[] LIST_SORT = {"full_name" , "name_level", "end_date"};
+	// default sort_type.
+	public static final String SORT_TYPE_DEFAULT = "full_name";
+	// default ESCAPE SQL 
+	public static final String ESCAPE_SQL = "#";
+	// rule ADMIn 
+	public static final int RULE_ADMIN = 0;
+	// message error system
+	public static final String SYSTEM_ERROR = MessageErrorProperties.getValueByKey("ER015");
 }
