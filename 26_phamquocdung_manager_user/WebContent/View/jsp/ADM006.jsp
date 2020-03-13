@@ -11,7 +11,11 @@
 <title>ユーザ管理</title>
 </head>
 <body>
+<<<<<<< HEAD
 	<!-- Begin vung footer -->
+=======
+		<!-- Begin vung footer -->
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 	<z:Footer></z:Footer>
 	<!-- End vung footer -->
 
@@ -41,7 +45,11 @@
 	</form>
 	<!-- End vung input -->
 
+<<<<<<< HEAD
 	<!-- Begin vung footer -->
+=======
+<!-- Begin vung footer -->
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 	<z:Footer></z:Footer>
 	<!-- End vung footer -->
 </body>

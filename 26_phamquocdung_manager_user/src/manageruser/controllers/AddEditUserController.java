@@ -68,6 +68,7 @@ public class AddEditUserController extends HttpServlet {
 			String nameLevel = "";
 			Date startDate = new Date();
 			Date endDate = new Date();
+<<<<<<< HEAD
 			String total = "";
 			
 			listErr = FormValidate.checkFormAddEdit(loginName, group_id, fullName, fullNameKata,
@@ -75,6 +76,13 @@ public class AddEditUserController extends HttpServlet {
 					email, tel, password, reWritePass, 
 					nameLevel, yearBirth, monthBirth, dateBirth, 
 					yearBirth, monthBirth, dateBirth, total);
+=======
+			int total = 0;
+			listErr = FormValidate.checkFormAddEdit(loginName, group_id, fullName, fullNameKata,
+					yearBirth, monthBirth, dateBirth,
+					email, tel, password, reWritePass, 
+					nameLevel, startDate, endDate, total);
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 			// -- end validate form --
 			if(listErr.isEmpty()) {
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM003);

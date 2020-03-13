@@ -131,7 +131,10 @@ public class ListUserController extends HttpServlet {
 					// gắn list sort lên JSP
 					req.setAttribute("listSort", listS);
 					// ---set default sort in JSP---
+<<<<<<< HEAD
 					req.setAttribute("sortType", sortType);
+=======
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 					req.setAttribute("currentPage", currentPage);
 					req.setAttribute("sortByFullName", sortByFullName);
 					req.setAttribute("sortByCodeLevel", sortByCodeLevel);

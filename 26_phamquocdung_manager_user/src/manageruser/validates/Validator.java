@@ -5,8 +5,11 @@
 package manageruser.validates;
 
 import java.util.regex.Pattern;
+<<<<<<< HEAD
 
 import manageruser.utils.MessageErrorProperties;
+=======
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 import manageruser.utils.StringPool;
 
 /**

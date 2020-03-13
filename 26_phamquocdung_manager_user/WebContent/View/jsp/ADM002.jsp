@@ -113,7 +113,11 @@
 							&currentPage=1&sortType=${listSort[0]}
 							&sortByFullName=${ASC}
 							&sortByCodeLevel=${sortByCodeLevel}
+<<<<<<< HEAD
 							&sortByEndDate=${sortByEndDate}">▼△</a>
+=======
+							&sortByEndDate=${sortByEndDate}">▽▲</a>
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 					</c:if>
 				</th>
 				<th align="left">生年月日</th>
@@ -136,7 +140,11 @@
 							&currentPage=1&sortType=${listSort[1]}
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${ASC}
+<<<<<<< HEAD
 							&sortByEndDate=${sortByEndDate}">▼△
+=======
+							&sortByEndDate=${sortByEndDate}">▽▲
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 							</a>
 					</c:if>
 				</th>
@@ -154,7 +162,11 @@
 							&currentPage=1&sortType=${listSort[2]}
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${sortByCodeLevel}
+<<<<<<< HEAD
 							&sortByEndDate=${ASC}">▼△</a>
+=======
+							&sortByEndDate=${ASC}">▽▲</a>
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 					</c:if>
 				</th>
 				<th align="left">点数</th>
@@ -183,6 +195,7 @@
 				<c:set var="numbPre" value="<%=numbPrev%>" scope="request"></c:set>
 				<td><c:if test="${numbPre != 0}">
 						<a
+<<<<<<< HEAD
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}
 							&group_id=${groupId}
 							&currentPage=<%=numbPrev%>
@@ -190,10 +203,14 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}"><<</a></td>
+=======
+							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=<%=numbPrev%>"><<</a></td>
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 				</c:if>
 				<c:forEach items="${listPaging}" var="item">
 					<c:if test="${item == currentPage}">
 						<td class="lbl_paging"><a style="text-decoration:none"
+<<<<<<< HEAD
 							href="${pageContext.request.contextPath}/listUser.do?
 							keyWord=${keyWord}
 							&group_id=${groupId}
@@ -202,12 +219,16 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}"><c:out
+=======
+							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=${item}"><c:out
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 									value="${item}"  />
 									</a> &nbsp;
 						</td>
 					</c:if>
 					<c:if test="${item != currentPage}">
 					<td class="lbl_paging"><a
+<<<<<<< HEAD
 							href="${pageContext.request.contextPath}/listUser.do?
 							keyWord=${keyWord}
 							&group_id=${groupId}
@@ -216,6 +237,9 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}"><c:out
+=======
+							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=${item}"><c:out
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 									value="${item}" />
 									</a> &nbsp;</td>
 									</c:if>
@@ -223,6 +247,7 @@
 				<td><c:set var="numbNext" value="<%=numbNext%>" scope="request"></c:set>
 					<c:if test="${numbNext != 0 }">
 						<a
+<<<<<<< HEAD
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}
 							&group_id=${groupId}
 							&currentPage=<%=numbNext%>
@@ -230,6 +255,9 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}">>></a></td>
+=======
+							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}&currentPage=<%=numbNext%>">>></a></td>
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 				</c:if>
 			</tr>
 		</table>

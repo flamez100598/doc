@@ -76,7 +76,11 @@ public class MstGroupDaoImpl extends BaseDAOImpl implements MstGroupDao {
 				}
 			}
 		} catch (SQLException e) {
+<<<<<<< HEAD
 			System.out.println("Loi get group:" + e.getMessage());
+=======
+			System.out.println("Loi:" + e.getMessage());
+>>>>>>> 07d47418da5e1dc2fcb0448ec612802626411840
 			throw e;
 		} finally {
 			closeConnect();
