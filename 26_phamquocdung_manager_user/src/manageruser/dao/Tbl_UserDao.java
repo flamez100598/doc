@@ -22,13 +22,13 @@ public interface Tbl_UserDao {
 	 * @return tbl_userEntity
 	 * @throws Exception 
 	 */
-	 tbl_user getTblUserByLoginName(String username) throws SQLException, Exception;
+	public tbl_user getTblUserByLoginName(String username) throws SQLException, Exception;
 	/**
 	 * @param groupId
 	 * @param FullName
 	 * @return total rows record user form db
 	 */
-	 int getTotalUser(int groupId, String FullName);
+	public int getTotalUser(int groupId, String FullName);
 	/**
 	 * get list user from db
 	 * @param keyWord key word search by username
@@ -42,7 +42,7 @@ public interface Tbl_UserDao {
 	 * @param sortByEndDate sắp xếp theo ngày hết hạn
 	 * @return list user
 	 */
-	 ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate);
+	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate);
 	
 
 }

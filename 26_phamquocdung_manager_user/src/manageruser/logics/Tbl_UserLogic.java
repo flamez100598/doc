@@ -35,4 +35,10 @@ public interface Tbl_UserLogic {
 	 * @return list user info
 	 */
 	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate);
+	/**
+	 * @param groupId
+	 * @param FullName
+	 * @return total rows record user form db
+	 */
+	public int getTotalUser(int groupId, String FullName);
 }

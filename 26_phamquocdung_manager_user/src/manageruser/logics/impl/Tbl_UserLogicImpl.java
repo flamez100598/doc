@@ -1,6 +1,6 @@
 /**
  *  Copy right (C) 2020 Luvina
- * userLogicsImpl.java, Feb 23, 2020 DungPham
+ * Tbl_UserLogicImpl.java, Feb 23, 2020 DungPham
  */
 package manageruser.logics.impl;
 
@@ -20,6 +20,10 @@ import manageruser.utils.Common;
  *
  */
 public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
+	Tbl_UserDao userDao;
+	public Tbl_UserLogicImpl() {
+		userDao = new Tbl_UserDaoImpl(); 
+	}
 	// overright 
 	@Override
 	/**
@@ -33,16 +37,13 @@ public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
 		boolean check = false;
 		tbl_user tbl_user;
 		try {
-			Tbl_UserDao userDao = new Tbl_UserDaoImpl();
 			tbl_user = userDao.getTblUserByLoginName(username);
 			if (tbl_user != null) {
 				String passHas = Common.get_SHA_1_SecurePassword(password, tbl_user.getSal());
 //				System.out.println(passHas);
-				if (Common.CompareString(passHas, tbl_user.getPass()) && tbl_user.getRule() == 0) {
+				if (Common.CompareString(passHas, tbl_user.getPass())) {
 					check = true;
-				} else {
-					check = false;
-				}
+				} 
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -52,12 +53,23 @@ public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see manageruser.logics.Tbl_UserLogic#getListUser(int, int, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType,
 			String sortByFullName, String sortByCodeLevel, String sortByEndDate) {
 		ArrayList<UserInfo> listUserInfo = new ArrayList<UserInfo>();
-		Tbl_UserDao userDao = new Tbl_UserDaoImpl();
 		listUserInfo = userDao.getListUser(offset, limit, groupId, fullName, sortType, sortByFullName, sortByCodeLevel, sortByEndDate);
 		return listUserInfo;
+	}
+	/**
+	 * @param groupId
+	 * @param FullName
+	 * @return total rows record user form db
+	 */
+	@Override
+	public int getTotalUser(int groupId, String FullName) {
+		return userDao.getTotalUser(groupId, FullName);
 	}
 }

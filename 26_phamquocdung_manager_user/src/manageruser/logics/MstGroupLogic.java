@@ -14,5 +14,9 @@ import manageruser.entities.mst_group;
  *
  */
 public interface MstGroupLogic {
-	ArrayList<mst_group> getAllMstGroup();
+	/**
+	 * @return list group
+	 */
+	ArrayList<mst_group> getAllGroup();
+
 }

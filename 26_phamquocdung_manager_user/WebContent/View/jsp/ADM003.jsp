@@ -1,35 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="../css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/user.js"></script>
+<link href="./View/css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="./View/js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
+<%
+	String grId = request.getParameter("group_id");
+	int groupId = 0;
+	if (grId != null && !"".equals(grId)) {
+		groupId = Integer.parseInt(grId);
+		request.getSession().setAttribute("group_id", groupId);
+	}
+	String codeLevel = request.getParameter("code_level");
+	if (grId != null && !"".equals(grId)) {
+		request.getSession().setAttribute("code_level", codeLevel);
+	}
+%>
 <body>
 	<!-- Begin vung header -->
-	<div>
-		<div>
-			<table>
-				<tr>
-					<td width="80%"><img src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
-						alt="Luvina" />
-						<td>
-							<td align="left"><a href="ADM001.html">ログアウト</a> &nbsp; <a
-								href="ADM002.html">トップ</a>
-								<td>
-				</tr>
-			</table>
-		</div>
-	</div>
-
+	<z:Header></z:Header>
 	<!-- End vung header -->
 
 	<!-- Begin vung input-->
-	<form action="ADM004.html" method="post" name="inputform">
+	<form action="${pageContext.request.contextPath}/addEdit.do" method="post" name="inputform">
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -39,7 +39,11 @@
 			</tr>
 			<tr>
 				<td class="errMsg">
-					<div style="padding-left: 120px">&nbsp;</div>
+					<div style="padding-left: 120px">
+					<c:forEach items="${listErr}" var="mes">					
+						<p style="margin:0"><c:out value="${mes}" />&nbsp;</p>					
+					</c:forEach>
+					&nbsp;</div>
 				</td>
 			</tr>
 			<tr>
@@ -49,35 +53,44 @@
 							cellspacing="0">
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> アカウント名:</td>
-								<td align="left"><input class="txBox" type="text" name="id"
-									value="" size="15" onfocus="this.style.borderColor='#0066ff';"
+								<td align="left"><input class="txBox" type="text"
+									name="login_name" value="" size="15"
+									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> グループ:</td>
 								<td align="left"><select name="group_id">
 										<option value="0">選択してください</option>
-										<option value="0">Nhóm 1</option>
-										<option value="0">Nhóm 2</option>
+										<c:set var="groupId" value="<%=groupId%>" scope="request"></c:set>
+										<c:forEach items="${listAllGroup}" var="item">
+											<c:if test="${item.group_id eq groupId}">
+												<option value="${item.group_id}" selected><c:out
+														value="${item.group_name}" /></option>
+											</c:if>
+											<option value="${item.group_id}"><c:out
+													value="${item.group_name}" /></option>
+										</c:forEach>
 								</select> <span>&nbsp;&nbsp;&nbsp;</span></td>
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> 氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="name" value="" size="30"
+									name="fullName" value="" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="name" value="" size="30"
+									name="nameKata" value="" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> 生年月日:</td>
-								<td align="left"><select>
+								<td align="left">
+								<select name="yearBirth">
 										<option value="2000">2000</option>
 										<option value="2001">2001</option>
 										<option value="2002">2002</option>
@@ -90,7 +103,8 @@
 										<option value="2009">2009</option>
 										<option value="2010" selected="selected">2010</option>
 										<option value="2011">2011</option>
-								</select>年 <select>
+								</select>年 
+								<select name="monthBirth">
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
@@ -103,7 +117,8 @@
 										<option value="10">10</option>
 										<option value="11">11</option>
 										<option value="12" selected="selected">12</option>
-								</select>月 <select>
+								</select>月 
+								<select name="dateBirth">
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
@@ -170,13 +185,17 @@
 							</tr>
 							<tr>
 								<td class="lbl_left">資格:</td>
-								<td align="left"><select name="kyu_id">
+								<td align="left"><select name="code_level">
 										<option value="0">選択してください</option>
-										<option value="0">N1</option>
-										<option value="0">N2</option>
-										<option value="0">N3</option>
-										<option value="0">N4</option>
-										<option value="0">N5</option>
+										<c:set var="codeLevel" value="<%=codeLevel%>" scope="request"></c:set>
+										<c:forEach items="${listAllJapanLevel}" var="item">
+											<c:if test="${item.code_level eq codeLevel}">
+												<option value="${item.code_level}" selected><c:out
+														value="${item.name_level}" /></option>
+											</c:if>
+											<option value="${item.code_level}"><c:out
+													value="${item.name_level}" /></option>
+										</c:forEach>
 								</select></td>
 							</tr>
 							<tr>
@@ -330,10 +349,7 @@
 	<!-- End vung input -->
 
 	<!-- Begin vung footer -->
-	<div class="lbl_footer">
-		<br><br><br><br> Copyright © 2010 ルビナソフトウエア株式会社.
-						All rights reserved. 
-	</div>
+	<z:Footer></z:Footer>
 	<!-- End vung footer -->
 </body>
 

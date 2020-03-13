@@ -25,12 +25,12 @@ import manageruser.utils.Common;
  */
 public class LoginFilter implements Filter {
 
+	/**
+	 * destroy filter
+	 */
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
 	}
-
 	/**
 	 * Hàm xử lí logic kiểm tra login
 	 */
@@ -45,27 +45,26 @@ public class LoginFilter implements Filter {
 			HttpSession httpSession = req.getSession();
 			// Khởi tạo biến checkLogin kiểm tra user đã đăng nhập hay chưa
 			boolean checkLogin = Common.checkLogin(httpSession);
-			System.out.println(checkLogin);
+//			System.out.println(checkLogin);
 //			boolean checkLogin = false;
 			// Khởi tạo biến contextPath
 			String contextPath = req.getContextPath();
-			// Khởi tạo biến loginUrl
+
 			// Khởi tạo biến checkLoginRequest để kiểm tra xem đường dẫn hiện
 			// Nếu đã login và đường dẫn là login
 			if (checkLogin) {
-				System.out.println("chain");
 				chain.doFilter(request, response);
 				// Ngược lại chuyển đến màn hình login
 			} else {
-				System.out.println("login fail");
-				resp.sendRedirect(contextPath);
+				// Redirect sang trang login
+				resp.sendRedirect(contextPath + Contants.URL_LOGOUT);
 			}
 		} catch (Exception e) {
 			System.out.println("Class: LoginFilter " + e.getMessage());
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath()+ "/" + Contants.FILE_JSP_PATH + Contants.URL_ERROR_DO);
+			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
 		}
 	}
 	@Override

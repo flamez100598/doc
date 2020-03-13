@@ -1,6 +1,6 @@
 /**
  *  Copy right (C) 2020 Luvina
- * userLogicsImpl.java, Feb 23, 2020 DungPham
+ * MstGroupLogicImpl.java, Feb 23, 2020 DungPham
  */
 package manageruser.logics.impl;
 
@@ -17,11 +17,15 @@ import manageruser.logics.MstGroupLogic;
  *
  */
 public class MstGroupLogicImpl implements MstGroupLogic {
-
-	@Override
-	public ArrayList<mst_group> getAllMstGroup() {
-		MstGroupDao groupDao =  new MstGroupDaoImpl();
-		return groupDao.getAllGroup();
+	MstGroupDao mstGr;
+	public MstGroupLogicImpl( ) {
+		mstGr = new MstGroupDaoImpl();
 	}
-
+	/**
+	 * @return list group
+	 */
+	@Override
+	public ArrayList<mst_group> getAllGroup() {
+		return mstGr.getAllGroup();
+	}
 }

@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import com.oracle.wls.shaded.org.apache.xalan.xsltc.compiler.sym;
+
 import manageruser.dao.Tbl_UserDao;
 import manageruser.dao.impl.Tbl_UserDaoImpl;
 import manageruser.entities.tbl_user;
@@ -18,10 +20,6 @@ import manageruser.entities.tbl_user;
 /**
  * common static function
  * @author DungPham
- *
- */
-/**
- * @author Admin
  *
  */
 public class Common {
@@ -130,20 +128,25 @@ public class Common {
 	public static ArrayList<Integer> getListPaging(int totalUser, int limit, int currentPage) {
 		limit = Contants.LIMIT;
 		ArrayList<Integer> listPaging = new ArrayList<Integer>();
+		int pageShow = currentPage / 3;
+		int surPlus = currentPage % 3;
 		int totalPage = calcTotalPage(totalUser, limit);
-		if (totalPage <= 3 || currentPage <= 3) {
-			for (int i = 1; i < 3; i++) {
-				listPaging.add(i);
-			}
-			if (totalPage >= 3) {
-				listPaging.add(3);
+		if (currentPage <= 3 && totalPage <= 3) {
+			if (totalPage < 3) {
+				for (int i = 1; i <= totalPage; i++) {
+					listPaging.add(i);
+				}
+			} else {
+				for (int i = 1; i <= 3; i++) {
+					listPaging.add(i);
+				}
 			}
 		} else {
 			int pageStart = 4;
-			int pageShow = currentPage / 3;
-			int surPlus = currentPage % 3;
+
+
 			if (surPlus > 0) {
-				pageStart = (pageShow * 4) - (pageShow - 1);
+				pageStart = (pageShow *3) + 1;
 			} else {
 				pageStart = currentPage - 2;
 			}
@@ -168,7 +171,20 @@ public class Common {
 	 * @return int vị trí hiển thị 
 	 */
 	public static int getOffset(int currentPage, int limit) {
-		limit = Contants.LIMIT;
-		return ((currentPage - 1) *  limit) + 1;
+		return ((currentPage - 1) *  limit);
+	}	
+	/**
+	 * @param str need replace
+	 * @return str replace
+	 */
+	public static String replaceWhiteCard(String str) {	
+		String[] symbol = {"!", "@", "$", "%" , "&", "<" , ">", ":"};
+		String[] symbolReplace = {"#!", "#@", "#$", "#%" , "#&", "#<" , "#>", "#:"};
+		if (!"".equals(str)) {
+			for (int i = 0; i < symbol.length; i++) {
+				str = str.replaceAll("/" + symbol[i] + "/", symbolReplace[i]);
+			}
+		}
+		return str;
 	}
 }

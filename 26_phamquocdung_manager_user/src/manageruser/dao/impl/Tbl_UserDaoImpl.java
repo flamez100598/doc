@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Constants;
 
+import manageruser.entities.SortField;
 import manageruser.entities.UserInfo;
 import manageruser.entities.tbl_user;
 import manageruser.utils.Contants;
@@ -44,27 +45,24 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				// khởi tạo object tbl_userEntity
 				user = new tbl_user();
 				// query lấy giá trị login_name, pass, salt
-				String sql = "select login_name, password, salt, rule from tbl_user where login_name = ?";
+				String sql = "select login_name, password, salt from tbl_user where login_name = ? and rule = ?";
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql);
 				//gắn param cho query
-				ps.setString(1, username);
+				int index = 1;
+				ps.setString(index, username);
+				ps.setInt(++index, Contants.RULE_ADMIN);
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
 				while (rs.next()) {
 					//check rule admin
-					if(rs.getInt("rule") != 0) {
-						return null;
-					}
 					// lưu giá trị login_name lấy được từ db vào biến user
 					user.setLogin_name(rs.getString("login_name"));
 					// lưu giá trị pass lấy được từ db vào biến user
 					user.setPass(rs.getString("password"));
 					// lưu giá trị salt lấy được từ db vào biến user
 					user.setSal(rs.getString("salt"));
-					// lưu giá trị rule lấy được từ db vào biến user
-					user.setRule(rs.getInt("rule"));
 				}
 			// kiểm tra nếu kết nối = null
 			} else {
@@ -93,16 +91,30 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	public int getTotalUser(int groupId, String FullName) {
 		int totalUser = 0;
 		try {
+			StringBuilder fullN = new StringBuilder();
+			fullN.append("%");
+			fullN.append(FullName);
+			fullN.append("%");
+			System.out.println(groupId);
 			// mở kết nối
 			openConnect();
 			// lấy giá trị connection sau khi kết nối
 			Connection con = (Connection) getConnect();
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
-				// query lấy giá trị login_name, pass, salt
-				String sql = "select count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id = mg.group_id where tu.rule = 1;";
+				StringBuilder sql = new StringBuilder();
+				sql.append("select  count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id = mg.group_id where tu.rule = 1 ");
+				sql.append(" AND tu.full_name LIKE ? ESCAPE '#'");
+				if (groupId == 0) {
+					sql.append(" AND tu.group_id <> ? ");
+				} else {
+					sql.append(" AND tu.group_id = ? ");
+				}
 				// tạo statement thực hiện query
-				PreparedStatement ps = con.prepareStatement(sql);
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int index = 1;
+				ps.setString(index, fullN.toString());
+				ps.setInt(++index, groupId);
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
@@ -142,14 +154,30 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 */
 	@Override
 	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate) {
-		sortByFullName = Contants.ASC;
-		sortByCodeLevel = Contants.ASC;
-		sortByEndDate = Contants.DESC;
-		sortType = "full_name";
 		StringBuilder fullN = new StringBuilder();
 		fullN.append("%");
 		fullN.append(fullName);
 		fullN.append("%");
+		String[] listS = Contants.LIST_SORT;
+		ArrayList<SortField> listSort = new ArrayList<SortField>();
+		for (int i = 0; i < listS.length; i++) {
+			SortField sf = new SortField();
+			if (i == 0) {
+				sf.setSortName(" tu.full_name ");
+				sf.setSortType(sortByFullName);
+				listSort.add(sf);
+			}
+			if (i == 1) {
+				sf.setSortName(" mj.name_level ");
+				sf.setSortType(sortByCodeLevel);
+				listSort.add(sf);
+			}
+			if (i == 2) {
+				sf.setSortName(" tduj.end_date ");
+				sf.setSortType(sortByEndDate);
+				listSort.add(sf);
+			}
+		}
 		// khai báo entity mảng chứa các user
 		ArrayList<UserInfo> listUser = new ArrayList<UserInfo>();
 		// bắt lỗi
@@ -173,24 +201,36 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				} else {
 					sql.append(" AND mg.group_id = ? ");
 				}
-				sql.append(" ORDER BY tu.full_name ");
-				sql.append(sortByFullName);
-				sql.append(" ,mj.name_level ");
-				sql.append(sortByCodeLevel);
-				sql.append(" ,tduj.end_date ");
-				sql.append(sortByEndDate);
+				sql.append(" ORDER BY ");
+				for (int i = 0 ; i < listSort.size(); i++) {
+					if (listSort.get(i).getSortName().contains(sortType)) {
+						sql.append(listSort.get(i).getSortName());
+						sql.append(listSort.get(i).getSortType());
+						sql.append(",");
+						listSort.remove(i);
+						break;
+					}
+				}
+				for (int i = 0 ; i < listSort.size(); i++) {
+					sql.append(listSort.get(i).getSortName());
+					sql.append(listSort.get(i).getSortType());
+					if (i != listSort.size() - 1) {
+						sql.append(",");
+					}
+				}
 				sql.append(" LIMIT ? OFFSET ?");
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql.toString());
 				//gắn param cho query
-				ps.setString(1, fullN.toString());
-				ps.setInt(2, groupId);
-				ps.setInt(3, limit);
-				ps.setInt(4, offset);
-//				System.out.println(sql);
+				int index = 1;
+				ps.setString(index, fullN.toString());
+				ps.setInt(++index, groupId);
+				ps.setInt(++index, limit);
+				ps.setInt(++index, offset);
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
+				System.out.println(sql.toString());
 				while (rs.next()) {
 					// khởi tạo object UserInfo
 					UserInfo user = new UserInfo();

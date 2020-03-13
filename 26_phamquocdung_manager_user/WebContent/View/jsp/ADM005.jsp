@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
-
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,23 +12,8 @@
 </head>
 <body>
 	<!-- Begin vung header -->
-	<div>
-		<div>
-			<table>
-				<tr>
-					<td width="80%"><img src="../images/logo-manager-user.gif"
-						alt="Luvina" />
-						<td>
-							<td align="left"><a href="ADM001.html">ログアウト</a> &nbsp; <a
-								href="ADM002.html">トップ</a>
-								<td>
-				</tr>
-			</table>
-		</div>
-	</div>
-
-	<!-- End vung header -->
-
+	<z:Header></z:Header>
+	<!-- End vung header --
 	<!-- Begin vung input-->
 	<form action="ADM003.html" method="post" name="inputform">
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
@@ -112,10 +97,7 @@
 	<!-- End vung input -->
 
 	<!-- Begin vung footer -->
-	<div class="lbl_footer">
-		<br><br><br><br> Copyright © 2010 ルビナソフトウエア株式会社.
-						All rights reserved. 
-	</div>
+	<z:Footer></z:Footer>
 	<!-- End vung footer -->
 </body>
 
