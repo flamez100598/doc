@@ -5,8 +5,9 @@
 package manageruser.controllers;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,8 +19,10 @@ import manageruser.entities.mst_group;
 import manageruser.entities.mst_japan;
 import manageruser.logics.MstGroupLogic;
 import manageruser.logics.MstJapanLogic;
+import manageruser.logics.Tbl_UserLogic;
 import manageruser.logics.impl.MstGroupLogicImpl;
 import manageruser.logics.impl.MstJapanLogicImpl;
+import manageruser.logics.impl.Tbl_UserLogicImpl;
 import manageruser.utils.Contants;
 import manageruser.validates.FormValidate;
 import manageruser.validates.Validator;
@@ -74,13 +77,14 @@ public class AddEditUserController extends HttpServlet {
 			int endYear = Integer.parseInt(req.getParameter("endYear"));
 			int endMonth = Integer.parseInt(req.getParameter("endMonth"));
 			int endDate = Integer.parseInt(req.getParameter("endDate"));
+			//get param from client
 			String email = req.getParameter("email");
 			String tel = req.getParameter("tel");
 			String password = req.getParameter("password");
 			String reWritePass = req.getParameter("reWritePass");
 			String nameLevel = req.getParameter("code_level");
 			String total = req.getParameter("total");
-			System.out.println("name_level" + nameLevel);
+			// check validate
 			listErr = FormValidate.checkFormAddEdit(loginName, group_id, fullName, fullNameKata,
 					yearBirth, monthBirth, dateBirth,
 					email, tel, password, reWritePass, 
@@ -88,7 +92,28 @@ public class AddEditUserController extends HttpServlet {
 					endYear, endMonth, endDate, total);
 			// -- end validate form --
 			if(listErr.isEmpty()) {
-				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM003);
+				req.setAttribute("login_name", loginName);
+				req.setAttribute("group_id", group_id);
+				req.setAttribute("fullName", fullName);
+				req.setAttribute("nameKata", fullNameKata);
+				req.setAttribute("email", email);
+				req.setAttribute("tel", tel);
+				req.setAttribute("password", password);
+				req.setAttribute("code_level", nameLevel);
+				Date birthDay = new Date(yearBirth - 1900, monthBirth, dateBirth);
+				Date startDateCodeLevel = new Date(startYear - 1900, startMonth, startDate);
+				Date endDateCodeLevel = new Date(endYear - 1900, endMonth, endDate);
+				req.setAttribute("birthDay", birthDay);
+				req.setAttribute("startDateCodeLevel", startDateCodeLevel);
+				req.setAttribute("endDateCodeLevel", endDateCodeLevel);
+				req.setAttribute("total", total);
+//				Tbl_UserLogic tblUl = new Tbl_UserLogicImpl();
+//				tblUl.AddUser(loginName, group_id, fullName, fullNameKata, 
+//						yearBirth, monthBirth, dateBirth, 
+//						email, tel, password, reWritePass, nameLevel, 
+//						startYear, startMonth, startDate, 
+//						endYear, endMonth, endDate, total);
+				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.ADD_USER);
 				requestDispatcher.forward(req, resp);
 			} else {
 				req.setAttribute("listErr", listErr);
@@ -111,6 +136,8 @@ public class AddEditUserController extends HttpServlet {
 		MstGroupLogic mstGr = new MstGroupLogicImpl();
 		MstJapanLogic mjl = new MstJapanLogicImpl();
 		// set request current time
+		String userId = "";
+		userId = req.getParameter("isUpdate");
 		req.setAttribute("currentYear", Contants.CURRENT_YEAR);
 		req.setAttribute("currentMonth", Contants.CURRENT_MONTH);
 		req.setAttribute("currentDate", Contants.CURRENT_DATE);

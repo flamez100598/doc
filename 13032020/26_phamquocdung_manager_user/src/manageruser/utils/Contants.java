@@ -41,6 +41,8 @@ public class Contants {
 	public static final String URL_ERROR_PAGE = "/System_Error.jsp";
 	// file path addEdit.do 
 	public static final String ADD_EDIT_FORM_URL = "/addEdit.do";
+	// file path addEdit.do 
+	public static final String ADD_USER = "/addUser.do";
 	// file path database properties
 	public static final String PROPERTIES_DATABASE_PATH = "Database.properties";
 	// file path message error properties
@@ -63,6 +65,8 @@ public class Contants {
 	public static final String ESCAPE_SQL = "#";
 	// rule ADMIn 
 	public static final int RULE_ADMIN = 0;
+	// rule clinet
+	public static final int RULE_CLIENT = 1;
 	// message error system
 	public static final String SYSTEM_ERROR = MessageErrorProperties.getValueByKey("ER015");
 	// get time now

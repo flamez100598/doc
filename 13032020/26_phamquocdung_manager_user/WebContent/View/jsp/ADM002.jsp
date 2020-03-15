@@ -5,7 +5,7 @@
 <%@page language="java" import="manageruser.entities.UserInfo"%>
 <%@page language="java" import="manageruser.entities.mst_group"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -74,13 +74,14 @@
 													value="${item.group_name}" /></option>
 										</c:if>
 										<c:if test="${item.group_id != groupId}">
-										<option value="${item.group_id}"><c:out
-												value="${item.group_name}" /></option>
+											<option value="${item.group_id}"><c:out
+													value="${item.group_name}" /></option>
 										</c:if>
 									</c:forEach>
 							</select></td>
 							<td align="left"><input class="btn" type="submit" value="検索" />
-								<input class="btn" type="button" onclick="openAddEditForm();" value="新規追加" /></td>
+								<input class="btn" type="button" onclick="openAddEditForm();"
+								value="新規追加" /></td>
 						</tr>
 					</table>
 				</td>
@@ -97,10 +98,9 @@
 			width="80%">
 
 			<tr class="tr2">
-				<th align="center" width="20px">ID</th>
+				<th align="center" width="20px" >ID</th>
 
-				<th align="left">氏名 
-					<c:if test="${sortByFullName eq ASC}">
+				<th align="left">氏名 <c:if test="${sortByFullName eq ASC}">
 						<a
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}
 							&currentPage=1&sortType=${listSort[0]}
@@ -108,8 +108,7 @@
 							&sortByCodeLevel=${sortByCodeLevel}
 							&sortByEndDate=${sortByEndDate}">▲▽
 						</a>
-					</c:if> 
-					<c:if test="${sortByFullName eq DESC}">
+					</c:if> <c:if test="${sortByFullName eq DESC}">
 						<a
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}
 							&currentPage=1&sortType=${listSort[0]}
@@ -122,8 +121,7 @@
 				<th align="left">グループ</th>
 				<th align="left">メールアドレス</th>
 				<th align="left" width="70px">電話番号</th>
-				<th align="left">日本語能力 
-					<c:if test="${sortByCodeLevel eq ASC}">
+				<th align="left">日本語能力 <c:if test="${sortByCodeLevel eq ASC}">
 						<a
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}
 							&currentPage=1&sortType=${listSort[1]}
@@ -131,15 +129,14 @@
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}">▲▽
 						</a>
-					</c:if> 
-					<c:if test="${sortByCodeLevel eq DESC}">
+					</c:if> <c:if test="${sortByCodeLevel eq DESC}">
 						<a
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}
 							&currentPage=1&sortType=${listSort[1]}
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${ASC}
 							&sortByEndDate=${sortByEndDate}">▼△
-							</a>
+						</a>
 					</c:if>
 				</th>
 				<th align="left">失効日 <c:if test="${sortByEndDate eq ASC}">
@@ -149,8 +146,7 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${sortByCodeLevel}
 							&sortByEndDate=${DESC}">▲▽</a>
-					</c:if> 
-					<c:if test="${sortByEndDate eq DESC}">
+					</c:if> <c:if test="${sortByEndDate eq DESC}">
 						<a
 							href="${pageContext.request.contextPath}/listUser.do?keyWord=${keyWord}&group_id=${groupId}
 							&currentPage=1&sortType=${listSort[2]}
@@ -163,7 +159,7 @@
 			</tr>
 			<c:forEach items="${listUserInfo}" var="user">
 				<tr>
-					<td><c:out value="${fn:escapeXml(user.user_id)}" /></td>
+					<td><a href="${pageContext.request.contextPath}/addEdit.do?userId=${fn:escapeXml(user.user_id)}"><c:out value="${fn:escapeXml(user.user_id)}" /></a></td>
 					<td><c:out value="${fn:escapeXml(user.full_name)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.birthday)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.group_name)}" /></td>
@@ -195,7 +191,7 @@
 				</c:if>
 				<c:forEach items="${listPaging}" var="item">
 					<c:if test="${item == currentPage}">
-						<td class="lbl_paging"><a style="text-decoration:none"
+						<td class="lbl_paging"><a style="text-decoration: none"
 							href="${pageContext.request.contextPath}/listUser.do?
 							keyWord=${keyWord}
 							&group_id=${groupId}
@@ -204,12 +200,10 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}"><c:out
-									value="${item}"  />
-									</a> &nbsp;
-						</td>
+									value="${item}" /> </a> &nbsp;</td>
 					</c:if>
 					<c:if test="${item != currentPage}">
-					<td class="lbl_paging"><a
+						<td class="lbl_paging"><a
 							href="${pageContext.request.contextPath}/listUser.do?
 							keyWord=${keyWord}
 							&group_id=${groupId}
@@ -218,9 +212,8 @@
 							&sortByFullName=${sortByFullName}
 							&sortByCodeLevel=${DESC}
 							&sortByEndDate=${sortByEndDate}"><c:out
-									value="${item}" />
-									</a> &nbsp;</td>
-									</c:if>
+									value="${item}" /> </a> &nbsp;</td>
+					</c:if>
 				</c:forEach>
 				<td><c:set var="numbNext" value="<%=numbNext%>" scope="request"></c:set>
 					<c:if test="${numbNext != 0 }">

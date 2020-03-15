@@ -17,6 +17,29 @@ import manageruser.utils.MessageErrorProperties;
  * @author DungPham
  */
 public class FormValidate {
+	/**
+	 * Validate from add or edit 
+	 * @param loginName login_name nhập từ bàn phím
+	 * @param groupId groupId chọn từ ô pulldown
+	 * @param fullName fullName nhập từ bàn phím
+	 * @param fullNameKata fullNameKata nhập từ bàn phím
+	 * @param yearBirth yearBirth chọn từ pulldown của hạng mục sinh nhật
+	 * @param monthBirth monthBirth chọn từ pulldown của hạng mục sinh nhật
+	 * @param dateBirth dateBirth chọn từ pulldown của hạng mục sinh nhật
+	 * @param email email nhập từ bàn phím
+	 * @param tel tel nhập từ bàn phím
+	 * @param password password nhập từ bàn phím
+	 * @param reWritePass nhập lại của hạng mục password nhập từ bàn phím
+	 * @param nameLevel nameLevel chọn từ pulldown hạng mục trình độ tiếng nhật
+	 * @param yearStartDate chọn từ pulldown của hạng mục start date
+	 * @param monthStartDate chọn từ pulldown của hạng mục start date
+	 * @param dateStartDate chọn từ pulldown của hạng mục start date
+	 * @param yearEndDate chọn từ pulldown của hạng mục end date
+	 * @param monthEndDate chọn từ pulldown của hạng mục end date
+	 * @param dateEndDate chọn từ pulldown của hạng mục end date
+	 * @param total total nhập từ bàn phím
+	 * @return ArrayList<String> listError nếu sai validate
+	 */
 	public static ArrayList<String> checkFormAddEdit(String loginName, String groupId, String fullName, String fullNameKata,
 			int yearBirth, int monthBirth, int dateBirth, String email, String tel, String password, String reWritePass, String nameLevel, 
 			int yearStartDate, int monthStartDate, int dateStartDate,
@@ -37,9 +60,10 @@ public class FormValidate {
 		// -- end validate login_name
 		// -- validate group name
 		MstGroupDao mstGrd = new MstGroupDaoImpl();
-		if (Integer.parseInt(groupId) == 0) {
+		int grId = Integer.parseInt(groupId);
+		if (grId == 0) {
 			listErr.add(MessageErrorProperties.getValueByKey("ER001_GROUP_NAME"));
-		} else if (mstGrd.getMstGroupById(Integer.parseInt(groupId)) == null) {
+		} else if (mstGrd.getMstGroupById(grId) == null) {
 			listErr.add(MessageErrorProperties.getValueByKey("ER004_GROUP_NAME"));
 		}
 		// -- end validate group name
@@ -58,7 +82,7 @@ public class FormValidate {
 			if (fullName.length() > 255) {
 				listErr.add(MessageErrorProperties.getValueByKey("ER006_FULL_NAME"));
 			}
-			if (!Validator.isKatakana(fullNameKata)) {
+			if (Validator.isKatakana(fullNameKata)) {
 				listErr.add(MessageErrorProperties.getValueByKey("ER009_FULL_NAME_KATA"));
 			}
 		}	
@@ -77,9 +101,13 @@ public class FormValidate {
 			if (email.length() > 100) {
 				listErr.add(MessageErrorProperties.getValueByKey("ER006_EMAIL"));
 			}		
-			// check format
+			// check exist
 			if (!Validator.checkExistEmail(email)) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER006_EMAIL"));
+				listErr.add(MessageErrorProperties.getValueByKey("ER003_EMAIL"));
+			}
+			// check format
+			if (!Validator.checkFormatEmail(email)) {
+				listErr.add(MessageErrorProperties.getValueByKey("ER005_EMAIL"));
 			}
 		}
 		// -- end validate email
@@ -104,14 +132,14 @@ public class FormValidate {
 			}
 			if (password.length() > 15 || password.length() < 4) {
 				listErr.add(MessageErrorProperties.getValueByKey("ER007_PASSWORD"));
-			}			
+			}
+			// -- validate re-password
+			if (!Common.CompareString(password, reWritePass)) {
+				listErr.add(MessageErrorProperties.getValueByKey("ER001_RE_PASSWORD"));
+			} 
+			// -- end validate re-password
 		}
 		// -- end validate password
-		// -- validate re-password
-		if (!Common.CompareString(password, reWritePass)) {
-			listErr.add(MessageErrorProperties.getValueByKey("ER001_RE_PASSWORD"));
-		} 
-		// -- end validate re-password
 		if (Validator.isNotNull(nameLevel)) {
 			// -- validate Start Date
 			String messErrorStartDate = Validator.checkMonthAndDate(yearBirth, monthBirth, dateBirth, "START_DATE");
@@ -130,7 +158,7 @@ public class FormValidate {
 				listErr.add(MessageErrorProperties.getValueByKey("ER001_TOTAL"));
 			} else {
 				if (!Validator.isHalfsize(total)) {
-					listErr.add(MessageErrorProperties.getValueByKey("ER018_LEVEL_NAME"));
+					listErr.add(MessageErrorProperties.getValueByKey("ER018_TOTAL"));
 				}
 				if (total.length() > 11) {
 					listErr.add(MessageErrorProperties.getValueByKey("ER006_TOTAL"));

@@ -32,11 +32,13 @@
 				</tr>
 
 				<tr>
-				<td class="errMsg" colspan="2">
-					<c:forEach items="${messageError}" var="mes">					
-						<p style="margin:0"><c:out value="${mes}" />&nbsp;</p>					
-					</c:forEach>
-					</td>
+					<td class="errMsg" colspan="2"><c:forEach
+							items="${messageError}" var="mes">
+							<p style="margin: 0">
+								<c:out value="${mes}" />
+								&nbsp;
+							</p>
+						</c:forEach></td>
 				</tr>
 				<tr align="left">
 					<td class="lbl_left">アカウント名:</td>

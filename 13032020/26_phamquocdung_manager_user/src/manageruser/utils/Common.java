@@ -41,7 +41,7 @@ public class Common {
 	 * @param
 	 * @return String random salt
 	 */
-	private static String getSalt() throws NoSuchAlgorithmException
+	public static String getSalt() throws NoSuchAlgorithmException
 	{
 		SecureRandom sr1 = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[16];

@@ -28,4 +28,13 @@ public class MstGroupLogicImpl implements MstGroupLogic {
 	public ArrayList<mst_group> getAllGroup() {
 		return mstGr.getAllGroup();
 	}
+	/**
+	 * get mst_group by id
+	 * @param groupId
+	 * @return mst_group
+	 */
+	@Override
+	public mst_group getGroupById(int groupId) {
+		return mstGr.getMstGroupById(groupId);
+	}
 }

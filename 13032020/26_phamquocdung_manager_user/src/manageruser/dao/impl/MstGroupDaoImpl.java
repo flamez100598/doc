@@ -67,7 +67,7 @@ public class MstGroupDaoImpl extends BaseDAOImpl implements MstGroupDao {
 				mstGr = new mst_group();
 				String sql = "SELECT group_id, group_name FROM mst_group WHERE group_id = ?;";
 				PreparedStatement ps = con.prepareStatement(sql);
-				ps.setInt(0, grId);
+				ps.setInt(1, grId);
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				while (rs.next()) {

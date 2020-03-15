@@ -15,7 +15,7 @@
 	String grId = request.getParameter("group_id");
 	int groupId = 0;
 	if (grId != null && !"".equals(grId)) {
-		groupId = Integer.parseInt(grId);
+		groupId = Integer.parseInt(grId); 
 		request.getSession().setAttribute("group_id", groupId);
 	}
 	String codeLevel = request.getParameter("code_level");
@@ -74,8 +74,8 @@
 														value="${item.group_name}" /></option>
 											</c:if>
 											<c:if test="${item.group_id != groupId}">
-											<option value="${item.group_id}"><c:out
-													value="${item.group_name}" /></option>
+												<option value="${item.group_id}"><c:out
+														value="${item.group_name}" /></option>
 											</c:if>
 										</c:forEach>
 								</select> <span>&nbsp;&nbsp;&nbsp;</span></td>
@@ -102,15 +102,18 @@
 										</c:forEach>
 										<option value="${currentYear}" selected>${currentYear}</option>
 								</select>年 <select name="monthBirth">
-										<c:forEach var="i" begin="1" end="${currentMonth}">
-											<option value="${i}"><c:out value="${i}" /></option>
+										<c:forEach var="i" begin="1" end="12">
+											<c:if test="${i == (currentMonth + 1)}">
+												<option value="${i}" selected>${i}</option>
+											</c:if>
+											<c:if test="${i != (currentMonth + 1)}">
+												<option value="${i}">${i}</option>
+											</c:if>
 										</c:forEach>
-										<option value="${currentMonth + 1}" selected>${currentMonth + 1}</option>
-								</select>月 <select name="dateBirth">	
+								</select>月 <select name="dateBirth">
 										<c:forEach var="i" begin="1" end="31">
 											<c:if test="${i == currentDate}">
-												<option value="${i}" selected><c:out
-														value="${i}" /></option>
+												<option value="${i}" selected><c:out value="${i}" /></option>
 											</c:if>
 											<c:if test="${i != currentDate}">
 												<option value="${i}"><c:out value="${i}" /></option>
@@ -160,8 +163,8 @@
 														value="${item.name_level}" /></option>
 											</c:if>
 											<c:if test="${item.code_level != codeLevel}">
-											<option value="${item.code_level}"><c:out
-													value="${item.name_level}" /></option>
+												<option value="${item.code_level}"><c:out
+														value="${item.name_level}" /></option>
 											</c:if>
 										</c:forEach>
 								</select></td>
@@ -174,15 +177,18 @@
 										</c:forEach>
 										<option value="${currentYear}" selected>${currentYear}</option>
 								</select>年 <select name="startMonth">
-									<c:forEach var="i" begin="1" end="${currentMonth}">
-										<option value="${i}"><c:out value="${i}" /></option>
-									</c:forEach>
-										<option value="${currentMonth + 1}" selected>${currentMonth + 1}</option>
+										<c:forEach var="i" begin="1" end="12">
+											<c:if test="${i == (currentMonth + 1)}">
+												<option value="${i}" selected>${i}</option>
+											</c:if>
+											<c:if test="${i != (currentMonth + 1)}">
+												<option value="${i}">${i}</option>
+											</c:if>
+										</c:forEach>
 								</select>月 <select name="startDate">
-									<c:forEach var="i" begin="1" end="31">
+										<c:forEach var="i" begin="1" end="31">
 											<c:if test="${i == currentDate}">
-												<option value="${i}" selected><c:out
-														value="${i}" /></option>
+												<option value="${i}" selected><c:out value="${i}" /></option>
 											</c:if>
 											<c:if test="${i != currentDate}">
 												<option value="${i}"><c:out value="${i}" /></option>
@@ -197,17 +203,19 @@
 											<option value="${i}"><c:out value="${i}" /></option>
 										</c:forEach>
 										<option value="${currentYear + 1}" selected>${currentYear + 1}</option>
-								</select>年 
-								<select name="endMonth">
-										<c:forEach var="i" begin="1" end="${currentMonth}">
-											<option value="${i}"><c:out value="${i}" /></option>
+								</select>年 <select name="endMonth">
+										<c:forEach var="i" begin="1" end="12">
+											<c:if test="${i == (currentMonth + 1)}">
+												<option value="${i}" selected>${i}</option>
+											</c:if>
+											<c:if test="${i != (currentMonth + 1)}">
+												<option value="${i}">${i}</option>
+											</c:if>
 										</c:forEach>
-										<option value="${currentMonth + 1}" selected>${currentMonth + 1}</option>
 								</select>月 <select name="endDate">
 										<c:forEach var="i" begin="1" end="31">
 											<c:if test="${i == currentDate}">
-												<option value="${i}" selected><c:out
-														value="${i}" /></option>
+												<option value="${i}" selected><c:out value="${i}" /></option>
 											</c:if>
 											<c:if test="${i != currentDate}">
 												<option value="${i}"><c:out value="${i}" /></option>

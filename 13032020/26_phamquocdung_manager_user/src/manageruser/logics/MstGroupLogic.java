@@ -18,5 +18,10 @@ public interface MstGroupLogic {
 	 * @return list group
 	 */
 	ArrayList<mst_group> getAllGroup();
-
+	/**
+	 * get mst_group by id
+	 * @param groupId
+	 * @return mst_group
+	 */
+	mst_group getGroupById(int groupId);
 }

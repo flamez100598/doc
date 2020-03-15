@@ -4,6 +4,7 @@
  */
 package manageruser.dao.impl;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +12,14 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Constants;
+import com.mysql.jdbc.Statement;
 
 import manageruser.entities.SortField;
 import manageruser.entities.UserInfo;
 import manageruser.entities.tbl_user;
+import manageruser.utils.Common;
 import manageruser.utils.Contants;
+import manageruser.validates.Validator;
 import manageruser.dao.BaseDao;
 import manageruser.dao.Tbl_UserDao;
 /**
@@ -298,7 +302,6 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
-				System.out.println(sql);
 				while (rs.next()) {	
 					count++;
 				}
@@ -317,8 +320,110 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 		} finally {
 			// đóng kết nối
 			closeConnect();
-			// trả về biến user
+			// trả về biến count
 			return count;
+		}
+	}
+	/**
+	 * Validate from add or edit 
+	 * @param loginName login_name nhập từ bàn phím
+	 * @param groupId groupId chọn từ ô pulldown
+	 * @param fullName fullName nhập từ bàn phím
+	 * @param fullNameKata fullNameKata nhập từ bàn phím
+	 * @param birthDay birthDay thêm mới
+	 * @param email email nhập từ bàn phím
+	 * @param tel tel nhập từ bàn phím
+	 * @param password password nhập từ bàn phím
+	 * @param nameLevel nameLevel chọn từ pulldown hạng mục trình độ tiếng nhật
+	 * @param startDate startDate thêm mới
+	 * @param endDate endDate thêm mới
+	 * @param total total nhập từ bàn phím
+	 * @return tbl_user user nếu insert thành công
+	 */
+	@Override
+	public int AddUser(String loginName, int groupId, String fullName, String fullNameKata, Date birthDay,
+			String email, String tel, String password, String nameLevel, Date startDate,
+			Date endDate, int total, String salt) {
+		// khởi tạo insert count
+		int insertCount = 0;
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				StringBuilder sql = new StringBuilder();
+				sql.append("INSERT INTO `tbl_user`(`group_id`,`login_name`,`password`,`full_name`,`full_name_kana`,`email`,`tel`,`birthday`,`salt`,`rule`)");
+				sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+				//gắn param cho query
+				int index = 1;
+				ps.setInt(index, groupId);
+				ps.setString(++index, loginName);
+				ps.setString(++index, password);
+				ps.setString(++index, fullName);
+				ps.setString(++index, fullNameKata);
+				ps.setString(++index, email);
+				ps.setString(++index, tel);
+				ps.setDate(++index, birthDay);
+				ps.setString(++index, salt);
+				ps.setInt(++index, Contants.RULE_CLIENT);
+				setAutoCommit(false);
+				insertCount = ps.executeUpdate();
+				int userIdInserted = 0;
+				// nếu insert thành công
+				if (insertCount == 1) {
+					setAutoCommit(true);
+					ResultSet rs = ps.getGeneratedKeys();
+					if(rs.next()) {
+						userIdInserted = rs.getInt(1); 
+					}
+					if (Validator.isNotNull(nameLevel)) {
+						StringBuilder sql2 = new StringBuilder();
+						sql2.append("INSERT INTO tbl_detail_user_japan(user_id, code_level, start_date, end_date, total)");
+						sql2.append(" VALUES(? , ? , ?, ?, ?);");
+						// tạo statement thực hiện query
+						PreparedStatement ps2 = con.prepareStatement(sql2.toString());
+						int index2 = 1;
+						ps2.setInt(index2, userIdInserted);
+						ps2.setString(++index2, nameLevel);
+						ps2.setDate(++index2, startDate);
+						ps2.setDate(++index2, endDate);
+						ps2.setInt(++index2, total);		
+						int insertDetail = ps2.executeUpdate();
+						if (insertDetail == 0) {
+							setAutoCommit(false);
+							//rollback data
+							rollback();
+						} 
+					}
+				} else {
+					setAutoCommit(false);
+					//rollback data
+					rollback();
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
+			//rollback data
+			rollback();
+			// in ra ngoại lệ
+			System.out.println("Lỗi insert user:" + e1.getMessage());
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return insertCount;
 		}
 	}
 

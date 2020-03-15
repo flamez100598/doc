@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>26_phamquocdung_manager_user</display-name>
 	<session-config>
-		<session-timeout>5</session-timeout>
+		<session-timeout>50</session-timeout>
 	</session-config>
 	<servlet>
 		<servlet-name>login</servlet-name>
@@ -44,6 +44,14 @@
 		<servlet-class>manageruser.controllers.AddEditUserController</servlet-class>
 	</servlet>
 	<servlet-mapping>
+		<servlet-name>addUser</servlet-name>
+		<url-pattern>/addUser.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>addUser</servlet-name>
+		<servlet-class>manageruser.controllers.AddUserController</servlet-class>
+	</servlet>
+	<servlet-mapping>
 		<servlet-name>addEditFormUser</servlet-name>
 		<url-pattern>/addEdit.do</url-pattern>
 	</servlet-mapping>
@@ -55,6 +63,7 @@
 		<filter-name>checkLogin</filter-name>
 		<url-pattern>/listUser.do</url-pattern>
 		<url-pattern>/addEdit.do</url-pattern>
+		<url-pattern>/addUser.do</url-pattern>
 		<url-pattern>/View/jsp/ADM002.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM003.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM004.jsp</url-pattern>
