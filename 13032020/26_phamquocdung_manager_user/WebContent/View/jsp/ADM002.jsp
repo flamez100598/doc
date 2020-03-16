@@ -159,7 +159,7 @@
 			</tr>
 			<c:forEach items="${listUserInfo}" var="user">
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/addEdit.do?userId=${fn:escapeXml(user.user_id)}"><c:out value="${fn:escapeXml(user.user_id)}" /></a></td>
+					<td><a href="${pageContext.request.contextPath}/userInfo.do?userId=${fn:escapeXml(user.user_id)}"><c:out value="${fn:escapeXml(user.user_id)}" /></a></td>
 					<td><c:out value="${fn:escapeXml(user.full_name)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.birthday)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.group_name)}" /></td>
@@ -229,7 +229,6 @@
 			</tr>
 		</table>
 		<!-- End vung paging -->
-
 		<!-- Begin vung footer -->
 		<z:Footer></z:Footer>
 		<!-- End vung footer -->

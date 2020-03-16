@@ -7,8 +7,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="${pageContext.request.contextPath}/View/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/View/js/user.js"></script>
+<link href="${pageContext.request.contextPath}/View/css/style.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/View/js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
 <body>
@@ -16,7 +18,9 @@
 	<z:Header></z:Header>
 	<!-- End vung header --
 	<!-- Begin vung input-->
-	<form action="${pageContext.request.contextPath}/addUser.do?isAddUser=true" method="post" name="inputform" onsubmit="handleClick()">
+	<form
+		action="${pageContext.request.contextPath}/addUser.do?isAddUser=true"
+		method="post" name="inputform" onsubmit="handleClick()">
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -34,50 +38,66 @@
 							cellspacing="0">
 							<tr>
 								<td class="lbl_left">アカウント名:</td>
-								<td align="left"><input type="hidden" value="${login_name}" name="login_name" />${login_name}<input type="hidden" value="${password}" name="password" /></td>
+								<td align="left"><input type="hidden" value="${login_name}"
+									name="login_name" />${login_name}<input type="hidden"
+									value="${password}" name="password" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">グループ:</td>
-								<td align="left"><input type="hidden" value="${group_id}" name="group_id" />${groupName}</td>
+								<td align="left"><input type="hidden" value="${group_id}"
+									name="group_id" />${groupName}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">氏名:</td>
-								<td align="left"><input type="hidden" value="${fullName}" name="fullName" />${fullName}</td>
+								<td align="left"><input type="hidden" value="${fullName}"
+									name="fullName" />${fullName}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
-								<td align="left"><input type="hidden" value="${nameKata}" name="nameKata" />${nameKata}</td>
+								<td align="left"><input type="hidden" value="${nameKata}"
+									name="nameKata" />${nameKata}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">生年月日:</td>
-								<td align="left"><input type="hidden" value="${birthDay}" name="birthDay" /><fmt:formatDate pattern="dd-MM-yyyy" value="${birthDay}" /></td>
+								<td align="left"><input type="hidden" value="${birthDay}"
+									name="birthDay" />
+								<fmt:formatDate pattern="dd-MM-yyyy" value="${birthDay}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">メールアドレス:</td>
-								<td align="left"><input type="hidden" value="${email}" name="email" />${email}</td>
+								<td align="left"><input type="hidden" value="${email}"
+									name="email" />${email}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">電話番号:</td>
-								<td align="left"><input type="hidden" value="${tel}" name="tel" />${tel}</td>
+								<td align="left"><input type="hidden" value="${tel}"
+									name="tel" />${tel}</td>
 							</tr>
 							<tr>
 								<th colspan="2"><a href="#">日本語能力</a></th>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格:</td>
-								<td align="left"><input type="hidden" value="${code_level}" name="code_level" />${code_level}</td>
+								<td align="left"><input type="hidden" value="${code_level}"
+									name="code_level" />${code_level}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格交付日:</td>
-								<td align="left"><input type="hidden" value="${startDateCodeLevel}" name="startDateCodeLevel" /><fmt:formatDate pattern="dd-MM-yyyy" value="${startDateCodeLevel}" /></td>
+								<td align="left"><input type="hidden"
+									value="${startDateCodeLevel}" name="startDateCodeLevel" />
+								<fmt:formatDate pattern="dd-MM-yyyy"
+										value="${startDateCodeLevel}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">失効日:</td>
-								<td align="left"><input type="hidden" value="${endDateCodeLevel}" name="endDateCodeLevel" /><fmt:formatDate pattern="dd-MM-yyyy" value="${endDateCodeLevel}" /></td>
+								<td align="left"><input type="hidden"
+									value="${endDateCodeLevel}" name="endDateCodeLevel" />
+								<fmt:formatDate pattern="dd-MM-yyyy" value="${endDateCodeLevel}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">点数:</td>
-								<td align="left"><input type="hidden" value="${total}" name="total" />${total}</td>
+								<td align="left"><input type="hidden" value="${total}"
+									name="total" />${total}</td>
 							</tr>
 						</table>
 					</div>
@@ -90,8 +110,9 @@
 			<table border="0" cellpadding="4" cellspacing="0" width="300px">
 				<tr>
 					<th width="200px" align="center">&nbsp;</th>
-					<td><input class="btn" type="submit" value="OK" id="submit-btn" /></td>
-					<td><input class="btn" type="button" value="戻る" /></td>
+					<td><input class="btn" type="submit" value="OK"
+						id="submit-btn" /></td>
+					<td><input class="btn" type="button" value="戻る" onclick="backPage()" /></td>
 				</tr>
 			</table>
 			<!-- End vung button -->

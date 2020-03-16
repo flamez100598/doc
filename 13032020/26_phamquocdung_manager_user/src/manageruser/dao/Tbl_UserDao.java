@@ -24,13 +24,13 @@ public interface Tbl_UserDao {
 	 * @return tbl_userEntity
 	 * @throws Exception 
 	 */
-	public tbl_user getTblUserByLoginName(String username) throws SQLException, Exception;
+	tbl_user getTblUserByLoginName(String username) throws SQLException, Exception;
 	/**
 	 * @param groupId
 	 * @param FullName
 	 * @return total rows record user form db
 	 */
-	public int getTotalUser(int groupId, String FullName);
+	int getTotalUser(int groupId, String FullName);
 	/**
 	 * get list user from db
 	 * @param keyWord key word search by username
@@ -44,13 +44,13 @@ public interface Tbl_UserDao {
 	 * @param sortByEndDate sắp xếp theo ngày hết hạn
 	 * @return list user
 	 */
-	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate);
+	ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate);
 	/**
 	 * check email exist
 	 * @param email email need check 
 	 * @return boolean
 	 */
-	public int checkExistEmail(String email);
+	int checkExistEmail(String email);
 	/**
 	 * Validate from add or edit 
 	 * @param loginName login_name nhập từ bàn phím
@@ -68,10 +68,16 @@ public interface Tbl_UserDao {
 	 * @param total total nhập từ bàn phím
 	 * @return int 1 is insert success
 	 */
-	public int AddUser(String loginName, int groupId, String fullName, String fullNameKata,
+	int AddUser(String loginName, int groupId, String fullName, String fullNameKata,
 			Date birthDay, String email, String tel, String password, String nameLevel, 
 			Date startDate,
 			Date endDate, int total, String salt);
+	/**
+	 * get user by user_id
+	 * @param userId need check
+	 * @return tbl_userE
+	 * @throws Exception 
+	 */
+	UserInfo getUserById(int userId) throws SQLException, Exception;
 	
-
 }

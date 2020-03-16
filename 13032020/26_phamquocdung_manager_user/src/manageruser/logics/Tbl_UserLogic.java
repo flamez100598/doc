@@ -67,4 +67,12 @@ public interface Tbl_UserLogic {
 			String password, String nameLevel, 
 			Date startDate,
 			Date endDate, String total) throws NoSuchAlgorithmException;
+	/**
+	 * get user by user_id
+	 * @param userId need check
+	 * @return tbl_userE
+	 * @throws SQLException 
+	 * @throws Exception 
+	 */
+	UserInfo getUserById(String userId) throws SQLException, Exception;
 }

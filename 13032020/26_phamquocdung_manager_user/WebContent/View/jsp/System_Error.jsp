@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -12,23 +13,8 @@
 </head>
 <body>
 	<!-- Begin vung header -->
-	<div>
-		<div>
-			<table>
-				<tr>
-					<td width="80%"><img
-						src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
-						alt="Luvina" />
-						<td>
-							<td align="left"><a href="ADM001.jsp">ログアウト</a> &nbsp; <a
-								href="ADM002.html">トップ</a>
-								<td>
-				</tr>
-			</table>
-		</div>
-	</div>
-
-	<!-- End vung header -->
+	<z:Header></z:Header>
+	<!-- End vung header --
 
 	<!-- Begin vung input-->
 	<form action="${pageContext.request.contextPath}/listUser.do"
@@ -41,7 +27,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="2"><font color="red">${errorSystem}</font></td>
+				<td align="center" colspan="2"><font color="red">${errorSystem} ${message }</font></td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">
@@ -57,10 +43,7 @@
 	<!-- End vung input -->
 
 	<!-- Begin vung footer -->
-	<div class="lbl_footer">
-		<br><br><br><br> Copyright © 2010 ルビナソフトウエア株式会社.
-						All rights reserved. 
-	</div>
+	<z:Footer></z:Footer>
 	<!-- End vung footer -->
 </body>
 

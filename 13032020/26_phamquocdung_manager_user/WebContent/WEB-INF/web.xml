@@ -55,6 +55,14 @@
 		<servlet-name>addEditFormUser</servlet-name>
 		<url-pattern>/addEdit.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>userInfo</servlet-name>
+		<servlet-class>manageruser.controllers.UserInfoController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>userInfo</servlet-name>
+		<url-pattern>/userInfo.do</url-pattern>
+	</servlet-mapping>
 	<filter>
 		<filter-name>checkLogin</filter-name>
 		<filter-class>manageruser.filter.LoginFilter</filter-class>
@@ -64,6 +72,7 @@
 		<url-pattern>/listUser.do</url-pattern>
 		<url-pattern>/addEdit.do</url-pattern>
 		<url-pattern>/addUser.do</url-pattern>
+		<url-pattern>/userInfo.do</url-pattern>
 		<url-pattern>/View/jsp/ADM002.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM003.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM004.jsp</url-pattern>

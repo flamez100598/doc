@@ -35,7 +35,7 @@ public class AddUserController extends HttpServlet {
 	 * validate form add and edit
 	 */
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			boolean isAddUser = false;
 			Object addUser = req.getParameter("isAddUser");

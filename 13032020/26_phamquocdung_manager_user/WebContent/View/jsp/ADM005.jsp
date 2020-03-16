@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@page language="java" import="manageruser.entities.UserInfo"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,6 +12,10 @@
 <script type="text/javascript" src="../js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
+<%
+	UserInfo user = new UserInfo();
+	user = (UserInfo) request.getAttribute("user");
+%>
 <body>
 	<!-- Begin vung header -->
 	<z:Header></z:Header>
@@ -31,50 +37,50 @@
 							cellspacing="0">
 							<tr>
 								<td class="lbl_left">アカウント名:</td>
-								<td align="left">ntmhuong</td>
+								<td align="left"><%=user.getLogin_name()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">グループ:</td>
-								<td align="left">Nhóm 1</td>
+								<td align="left"><%=user.getGroup_name()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">氏名:</td>
-								<td align="left">Nguyễn Thị Mai Hương</td>
+								<td align="left"><%=user.getFull_name()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
-								<td align="left">名カナ</td>
+								<td align="left"><%=user.getFull_name_kana()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">生年月日:</td>
-								<td align="left">1983/07/08</td>
+								<td align="left"><%=user.getBirthday()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">メールアドレス:</td>
-								<td align="left">ntmhuong@luvina.net</td>
+								<td align="left"><%=user.getEmail()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">電話番号:</td>
-								<td align="left">0914326386</td>
+								<td align="left"><%=user.getTel()%></td>
 							</tr>
 							<tr>
 								<th colspan="2"><a href="#">日本語能力</a></th>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格:</td>
-								<td align="left">Trình độ tiếng nhật cấp 1</td>
+								<td align="left"><%=user.getName_level()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格交付日:</td>
-								<td align="left">2010/07/08</td>
+								<td align="left"><%=user.getStart_date()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">失効日:</td>
-								<td align="left">2011/07/08</td>
+								<td align="left"><%=user.getEnd_date()%></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">点数:</td>
-								<td align="left">290</td>
+								<td align="left"><%=user.getTotal()%></td>
 							</tr>
 						</table>
 					</div>
@@ -89,7 +95,7 @@
 					<th width="200px" align="center">&nbsp;</th>
 					<td><input class="btn" type="submit" value="編集" /></td>
 					<td><input class="btn" type="button" value="削除" /></td>
-					<td><input class="btn" type="button" value="戻る" /></td>
+					<td><input class="btn" type="button" value="戻る" onclick="backPage()" /></td>
 				</tr>
 			</table>
 			<!-- End vung button -->

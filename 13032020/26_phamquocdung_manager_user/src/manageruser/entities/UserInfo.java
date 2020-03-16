@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class UserInfo {
 	private int user_id;
+	private String login_name;
 	private String full_name;
 	private Date birthday;
 	private String group_name;
@@ -21,6 +22,9 @@ public class UserInfo {
 	private String name_level;
 	private Date end_date;
 	private int total;
+	private int detail_user_japan_id;
+	private Date start_date;
+	private String full_name_kana;
 	/**
 	 * @return the birthday
 	 */
@@ -128,5 +132,53 @@ public class UserInfo {
 	 */
 	public void setUser_id(int user_id) {
 		this.user_id = user_id;
+	}
+	/**
+	 * @return the detail_user_japan_id
+	 */
+	public int getDetail_user_japan_id() {
+		return detail_user_japan_id;
+	}
+	/**
+	 * @param detail_user_japan_id the detail_user_japan_id to set
+	 */
+	public void setDetail_user_japan_id(int detail_user_japan_id) {
+		this.detail_user_japan_id = detail_user_japan_id;
+	}
+	/**
+	 * @param start_date the start_date to set
+	 */
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+	/**
+	 * @return the start_date
+	 */
+	public Date getStart_date() {
+		return start_date;
+	}
+	/**
+	 * @return the login_name
+	 */
+	public String getLogin_name() {
+		return login_name;
+	}
+	/**
+	 * @param login_name the login_name to set
+	 */
+	public void setLogin_name(String login_name) {
+		this.login_name = login_name;
+	}
+	/**
+	 * @return the full_name_kana
+	 */
+	public String getFull_name_kana() {
+		return full_name_kana;
+	}
+	/**
+	 * @param full_name_kana the full_name_kana to set
+	 */
+	public void setFull_name_kana(String full_name_kana) {
+		this.full_name_kana = full_name_kana;
 	}
 }

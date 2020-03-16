@@ -6,19 +6,55 @@ package manageruser.controllers;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import manageruser.entities.UserInfo;
+import manageruser.logics.Tbl_UserLogic;
+import manageruser.logics.impl.Tbl_UserLogicImpl;
+import manageruser.utils.Contants;
+import manageruser.validates.Validator;
 
 /**
  * show info user by id
  * @author DungPham
  */
 public class UserInfoController extends HttpServlet {
+	/**
+	 * get user by user id
+	 * @param req requset servlet
+	 * @param resp response servlet
+	 */ 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			// lấy id từ param truyền vào
+			String user_id = req.getParameter("userId");
+			// kiểm tra user_id khác null
+			if (Validator.isNotNull(user_id)) {
+				Tbl_UserLogic tblu = new Tbl_UserLogicImpl();
+				UserInfo userInfo = new UserInfo();
+				userInfo = tblu.getUserById(user_id);
+				req.setAttribute("user", userInfo);
+				RequestDispatcher rd = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM005);
+				rd.forward(req, resp);
+			} else {
+				req.setAttribute("message", "User không tồn tại!");
+				RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
+				rd.forward(req, resp);
+			}
+		} catch (Exception e) {
+			System.out.println("Class Add user controller:" + e.getMessage());
+			req.setAttribute("message", "User không tồn tại!");
+			RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
+			try {
+				rd.forward(req, resp);
+			} catch (ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 }

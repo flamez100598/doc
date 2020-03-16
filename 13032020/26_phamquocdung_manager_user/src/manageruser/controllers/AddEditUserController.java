@@ -130,29 +130,37 @@ public class AddEditUserController extends HttpServlet {
 		}
 	}
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		ArrayList<mst_group> listAllGroup = null;
-		ArrayList<mst_japan> listAllJapanLevel = null;
-		MstGroupLogic mstGr = new MstGroupLogicImpl();
-		MstJapanLogic mjl = new MstJapanLogicImpl();
-		// set request current time
-		String userId = "";
-		userId = req.getParameter("isUpdate");
-		req.setAttribute("currentYear", Contants.CURRENT_YEAR);
-		req.setAttribute("currentMonth", Contants.CURRENT_MONTH);
-		req.setAttribute("currentDate", Contants.CURRENT_DATE);
-		int groupId = 0;
-		//--- lấy giá trị của group đổ lên view ----
-		// get list all group form database
-		listAllGroup = mstGr.getAllGroup();
-		// set listAllGroup to JSP
-		req.setAttribute("listAllGroup", listAllGroup);
-		//---end lấy giá trị của group đổ lên view ----
-		// -- lấy giá trị của trình độ tiếng nhật
-		listAllJapanLevel = mjl.getAllListJapanLevel();
-		req.setAttribute("listAllJapanLevel", listAllJapanLevel);
-		// -- end lấy giá trị của trình độ tiếng nhật
-		RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM003);
-		requestDispatcher.forward(req, resp);
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+		try {
+			ArrayList<mst_group> listAllGroup = null;
+			ArrayList<mst_japan> listAllJapanLevel = null;
+			MstGroupLogic mstGr = new MstGroupLogicImpl();
+			MstJapanLogic mjl = new MstJapanLogicImpl();
+			// set request current time
+			req.setAttribute("currentYear", Contants.CURRENT_YEAR);
+			req.setAttribute("currentMonth", Contants.CURRENT_MONTH);
+			req.setAttribute("currentDate", Contants.CURRENT_DATE);
+			int groupId = 0;
+			//--- lấy giá trị của group đổ lên view ----
+			// get list all group form database
+			listAllGroup = mstGr.getAllGroup();
+			// set listAllGroup to JSP
+			req.setAttribute("listAllGroup", listAllGroup);
+			//---end lấy giá trị của group đổ lên view ----
+			// -- lấy giá trị của trình độ tiếng nhật
+			listAllJapanLevel = mjl.getAllListJapanLevel();
+			req.setAttribute("listAllJapanLevel", listAllJapanLevel);
+			// -- end lấy giá trị của trình độ tiếng nhật
+			RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM003);
+			requestDispatcher.forward(req, resp);
+		} catch (Exception e) {
+			System.out.println("Class Add edit controller:" + e.getMessage());
+			RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
+			try {
+				rd.forward(req, resp);
+			} catch (ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 }

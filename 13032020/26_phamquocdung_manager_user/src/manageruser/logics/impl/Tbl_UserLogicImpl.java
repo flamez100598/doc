@@ -110,4 +110,15 @@ public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
 				nameLevel, startDate, endDate, totalParse, salt);
 		return isInsert;
 	}
+	/**
+	 * get user by user_id
+	 * @param userId need check
+	 * @return tbl_userE
+	 * @throws SQLException 
+	 * @throws Exception 
+	 */
+	public UserInfo getUserById(String userId) throws SQLException, Exception {
+		int user_id = Integer.parseInt(userId);
+		return userDao.getUserById(user_id);
+	}
 }

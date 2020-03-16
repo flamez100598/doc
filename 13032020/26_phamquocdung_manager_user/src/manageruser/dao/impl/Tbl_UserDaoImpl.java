@@ -60,7 +60,6 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
 				while (rs.next()) {
-					//check rule admin
 					// lưu giá trị login_name lấy được từ db vào biến user
 					user.setLogin_name(rs.getString("login_name"));
 					// lưu giá trị pass lấy được từ db vào biến user
@@ -158,10 +157,13 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 */
 	@Override
 	public ArrayList<UserInfo> getListUser(int offset, int limit, int groupId, String fullName, String sortType, String sortByFullName, String sortByCodeLevel, String sortByEndDate) {
+		// begin-- khởi tạo giá trị fullName
 		StringBuilder fullN = new StringBuilder();
 		fullN.append("%");
 		fullN.append(fullName);
 		fullN.append("%");
+		// end-- khởi tạo giá trị fullName
+		// begin-- khởi tạo các trường được sort
 		String[] listS = Contants.LIST_SORT;
 		ArrayList<SortField> listSort = new ArrayList<SortField>();
 		for (int i = 0; i < listS.length; i++) {
@@ -182,6 +184,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				listSort.add(sf);
 			}
 		}
+		// end-- khởi tạo các trường được sort
 		// khai báo entity mảng chứa các user
 		ArrayList<UserInfo> listUser = new ArrayList<UserInfo>();
 		// bắt lỗi
@@ -192,7 +195,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			Connection con = (Connection) getConnect();
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
-				// query lấy giá trị login_name, pass, salt
+				// query lấy giá trị UserInfo
 				StringBuilder sql = new StringBuilder();
 				sql.append("SELECT tu.user_id, tu.full_name, birthday, mg.group_name, email, tel, mj.name_level, tduj.end_date, tduj.total FROM tbl_user tu");
 				sql.append(" INNER JOIN mst_group mg ON tu.group_id=mg.group_id");
@@ -206,6 +209,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 					sql.append(" AND mg.group_id = ? ");
 				}
 				sql.append(" ORDER BY ");
+				// begin-- sắp xếp thứ tự sort ưu tiên theo sortType
 				for (int i = 0 ; i < listSort.size(); i++) {
 					if (listSort.get(i).getSortName().contains(sortType)) {
 						sql.append(listSort.get(i).getSortName());
@@ -222,6 +226,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 						sql.append(",");
 					}
 				}
+				// end-- sắp xếp thứ tự sort ưu tiên theo sortType
 				sql.append(" LIMIT ? OFFSET ?");
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql.toString());
@@ -234,7 +239,6 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
-				System.out.println(sql.toString());
 				while (rs.next()) {
 					// khởi tạo object UserInfo
 					UserInfo user = new UserInfo();
@@ -415,7 +419,6 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			rollback();
 			// in ra ngoại lệ
 			System.out.println("Lỗi insert user:" + e1.getMessage());
-			e1.printStackTrace();
 			// xử lý ngoại lệ
 			throw e1;
 			// giá trị cuối cùng trả về
@@ -424,6 +427,83 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			closeConnect();
 			// trả về biến user
 			return insertCount;
+		}
+	}
+	/**
+	 * get user by user_id
+	 * @param userId need check
+	 * @return tbl_userE
+	 * @throws Exception 
+	 */
+	@Override
+	public UserInfo getUserById(int userId) throws SQLException, Exception {
+		// khai báo entity tbl_userEntity
+		UserInfo user = new UserInfo();
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				// query lấy giá trị UserInfo
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT tu.full_name_kana, tu.login_name, tu.user_id, tu.full_name, birthday, mg.group_name, email, tduj.start_date, tel, mj.name_level, tduj.end_date, tduj.total, tduj.detail_user_japan_id FROM tbl_user tu");
+				sql.append(" INNER JOIN mst_group mg ON tu.group_id=mg.group_id");
+				sql.append(" LEFT JOIN tbl_detail_user_japan tduj ON tduj.user_id = tu.user_id");
+				sql.append(" LEFT JOIN mst_japan mj ON mj.code_level = tduj.code_level");
+				sql.append(" WHERE tu.rule = 1 ");
+				sql.append(" AND tu.user_id = ?");
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				ps.setInt(1, userId);
+				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
+				ResultSet rs = ps.executeQuery();
+				// duyệt biến rs để lấy giá trị
+				while (rs.next()) {
+					user.setUser_id(rs.getInt("user_id"));
+					// lưu giá trị full_name lấy được từ db vào biến user
+					user.setFull_name(rs.getString("full_name"));
+					// lưu giá trị user_id lấy được từ db vào biến user
+					user.setUser_id(rs.getInt("user_id"));
+					// lưu giá trị full_name lấy được từ db vào biến user
+					user.setBirthday(rs.getDate("birthday"));
+					// lưu giá trị email lấy được từ db vào biến user
+					user.setEmail(rs.getString("email"));
+					// lưu giá trị end_date lấy được từ db vào biến user
+					user.setEnd_date(rs.getDate("end_date"));
+					// lưu giá trị group_name lấy được từ db vào biến user
+					user.setGroup_name(rs.getString("group_name"));
+					// lưu giá trị tel lấy được từ db vào biến user
+					user.setTel(rs.getString("tel"));
+					// lưu giá trị total lấy được từ db vào biến user
+					user.setTotal(rs.getInt("total"));
+					// lưu giá trị name_level lấy được từ db vào biến user
+					user.setName_level(rs.getString("name_level"));
+					// lưu giá trị start_date lấy được từ db
+					user.setStart_date(rs.getDate("start_date"));
+					// lưu giá trị login_name
+					user.setLogin_name(rs.getString("login_name"));
+					// luư giá trị full_name_kana
+					user.setFull_name_kana(rs.getString("full_name_kana"));
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return user;
 		}
 	}
 
