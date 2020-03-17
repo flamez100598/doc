@@ -27,7 +27,8 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="2"><font color="red">${errorSystem} ${message }</font></td>
+				<td align="center" colspan="2"><font color="red">${errorSystem}
+						${message }</font></td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">

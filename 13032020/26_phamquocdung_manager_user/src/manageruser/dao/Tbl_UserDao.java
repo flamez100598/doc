@@ -50,7 +50,7 @@ public interface Tbl_UserDao {
 	 * @param email email need check 
 	 * @return boolean
 	 */
-	int checkExistEmail(String email);
+	int checkExistEmail(String email, int UserId);
 	/**
 	 * Validate from add or edit 
 	 * @param loginName login_name nhập từ bàn phím
@@ -79,5 +79,6 @@ public interface Tbl_UserDao {
 	 * @throws Exception 
 	 */
 	UserInfo getUserById(int userId) throws SQLException, Exception;
+	tbl_user getUserByLoginName(int userId, String loginName);
 	
 }

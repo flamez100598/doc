@@ -21,6 +21,7 @@ import manageruser.utils.Common;
 import manageruser.utils.Contants;
 import manageruser.validates.Validator;
 import manageruser.dao.BaseDao;
+import manageruser.dao.TblDetailUserJapanDao;
 import manageruser.dao.Tbl_UserDao;
 /**
  * User data access 
@@ -287,7 +288,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 * @return boolean
 	 */
 	@Override
-	public int checkExistEmail(String email) {
+	public int checkExistEmail(String email, int userId) {
 		// đếm số bản ghi thu được
 		int count = 0;
 		// bắt lỗi
@@ -298,11 +299,18 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			Connection con = (Connection) getConnect();
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
-				String sql = "SELECT email FROM tbl_user WHERE email = ?;";
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT email FROM tbl_user WHERE email = ?;");
+				if (userId != 0) {
+					sql.append(" AND user_id <> ?");
+				}
 				// tạo statement thực hiện query
-				PreparedStatement ps = con.prepareStatement(sql);
+				PreparedStatement ps = con.prepareStatement(sql.toString());
 				//gắn param cho query
 				ps.setString(1, email);
+				if (userId != 0) {
+					ps.setInt(1, userId);
+				}
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
 				// duyệt biến rs để lấy giá trị
@@ -386,23 +394,8 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 						userIdInserted = rs.getInt(1); 
 					}
 					if (Validator.isNotNull(nameLevel)) {
-						StringBuilder sql2 = new StringBuilder();
-						sql2.append("INSERT INTO tbl_detail_user_japan(user_id, code_level, start_date, end_date, total)");
-						sql2.append(" VALUES(? , ? , ?, ?, ?);");
-						// tạo statement thực hiện query
-						PreparedStatement ps2 = con.prepareStatement(sql2.toString());
-						int index2 = 1;
-						ps2.setInt(index2, userIdInserted);
-						ps2.setString(++index2, nameLevel);
-						ps2.setDate(++index2, startDate);
-						ps2.setDate(++index2, endDate);
-						ps2.setInt(++index2, total);		
-						int insertDetail = ps2.executeUpdate();
-						if (insertDetail == 0) {
-							setAutoCommit(false);
-							//rollback data
-							rollback();
-						} 
+						TblDetailUserJapanDao tblDUJ = new TblDetailUserJapanDaoImpl();
+						int updateUserJapan = tblDUJ.addDetailUserJapan(userIdInserted, nameLevel, startDate, endDate, total);
 					}
 				} else {
 					setAutoCommit(false);
@@ -487,6 +480,55 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 					user.setLogin_name(rs.getString("login_name"));
 					// luư giá trị full_name_kana
 					user.setFull_name_kana(rs.getString("full_name_kana"));
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return user;
+		}
+	}
+	@Override
+	public tbl_user getUserByLoginName(int userId, String loginName) {
+		userId = 0;
+		tbl_user user = new tbl_user();
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				// query lấy giá trị UserInfo
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT login_name FROM tbl_user WHERE loginName = ?");
+				if (userId != 0) {
+					sql.append(" AND userId <> ?");
+				}
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int index = 1;
+				ps.setString(1, loginName);
+				if (userId != 0) {
+					ps.setInt(++index, userId);
+				}
+				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
+				ResultSet rs = ps.executeQuery();
+				// duyệt biến rs để lấy giá trị
+				while (rs.next()) {
+					user.setLogin_name(rs.getString("login_name"));
 				}
 				// kiểm tra nếu kết nối = null
 			} else {

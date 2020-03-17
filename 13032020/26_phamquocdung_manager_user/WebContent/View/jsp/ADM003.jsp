@@ -242,7 +242,8 @@
 				<tr>
 					<th width="200px" align="center">&nbsp;</th>
 					<td><input class="btn" type="submit" value="確認" /></td>
-					<td><input class="btn" type="button" value="戻る" onclick="backPage()" /></td>
+					<td><input class="btn" type="button" value="戻る"
+						onclick="backPage()" /></td>
 				</tr>
 			</table>
 			<!-- End vung button -->

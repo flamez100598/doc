@@ -98,7 +98,7 @@
 			width="80%">
 
 			<tr class="tr2">
-				<th align="center" width="20px" >ID</th>
+				<th align="center" width="20px">ID</th>
 
 				<th align="left">氏名 <c:if test="${sortByFullName eq ASC}">
 						<a
@@ -159,7 +159,9 @@
 			</tr>
 			<c:forEach items="${listUserInfo}" var="user">
 				<tr>
-					<td><a href="${pageContext.request.contextPath}/userInfo.do?userId=${fn:escapeXml(user.user_id)}"><c:out value="${fn:escapeXml(user.user_id)}" /></a></td>
+					<td><a
+						href="${pageContext.request.contextPath}/userInfo.do?userId=${fn:escapeXml(user.user_id)}"><c:out
+								value="${fn:escapeXml(user.user_id)}" /></a></td>
 					<td><c:out value="${fn:escapeXml(user.full_name)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.birthday)}" /></td>
 					<td><c:out value="${fn:escapeXml(user.group_name)}" /></td>

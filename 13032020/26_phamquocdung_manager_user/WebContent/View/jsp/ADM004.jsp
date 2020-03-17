@@ -60,8 +60,8 @@
 							<tr>
 								<td class="lbl_left">生年月日:</td>
 								<td align="left"><input type="hidden" value="${birthDay}"
-									name="birthDay" />
-								<fmt:formatDate pattern="dd-MM-yyyy" value="${birthDay}" /></td>
+									name="birthDay" /> <fmt:formatDate pattern="dd-MM-yyyy"
+										value="${birthDay}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">メールアドレス:</td>
@@ -84,15 +84,14 @@
 							<tr>
 								<td class="lbl_left">資格交付日:</td>
 								<td align="left"><input type="hidden"
-									value="${startDateCodeLevel}" name="startDateCodeLevel" />
-								<fmt:formatDate pattern="dd-MM-yyyy"
-										value="${startDateCodeLevel}" /></td>
+									value="${startDateCodeLevel}" name="startDateCodeLevel" /> <fmt:formatDate
+										pattern="dd-MM-yyyy" value="${startDateCodeLevel}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">失効日:</td>
 								<td align="left"><input type="hidden"
-									value="${endDateCodeLevel}" name="endDateCodeLevel" />
-								<fmt:formatDate pattern="dd-MM-yyyy" value="${endDateCodeLevel}" /></td>
+									value="${endDateCodeLevel}" name="endDateCodeLevel" /> <fmt:formatDate
+										pattern="dd-MM-yyyy" value="${endDateCodeLevel}" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">点数:</td>
@@ -112,7 +111,8 @@
 					<th width="200px" align="center">&nbsp;</th>
 					<td><input class="btn" type="submit" value="OK"
 						id="submit-btn" /></td>
-					<td><input class="btn" type="button" value="戻る" onclick="backPage()" /></td>
+					<td><input class="btn" type="button" value="戻る"
+						onclick="backPage()" /></td>
 				</tr>
 			</table>
 			<!-- End vung button -->

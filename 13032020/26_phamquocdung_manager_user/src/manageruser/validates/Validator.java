@@ -241,7 +241,7 @@ public class Validator {
 	 */
 	public static boolean checkExistEmail(String str) {
 		Tbl_UserDao tud = new Tbl_UserDaoImpl();
-		if (tud.checkExistEmail(str) > 0) {
+		if (tud.checkExistEmail(str, 0) > 0) {
 			return false;
 		}
 		return true;
