@@ -35,10 +35,20 @@ public class UserInfoController extends HttpServlet {
 			String user_id = req.getParameter("userId");
 			// kiểm tra user_id khác null
 			if (Validator.isNotNull(user_id)) {
+				// lấy id từ param truyền vào
+				String isDelete = req.getParameter("isDelete");
 				Tbl_UserLogic tblu = new Tbl_UserLogicImpl();
 				UserInfo userInfo = new UserInfo();
+				int userIdParse =  Integer.parseInt(user_id);
+				if (Validator.isNotNull(isDelete)) {
+					int checkDelete = tblu.deleteUserByUserId(userIdParse);
+					req.setAttribute("message", Contants.SUCCESS_MESSAGE_DELETE);
+					RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.SUCCESS_DO);
+					requestDispatcher.forward(req, resp);
+					return;
+				}
 				userInfo = tblu.getUserById(user_id);
-				req.setAttribute("user", userInfo);
+				req.setAttribute("userInfo", userInfo);
 				RequestDispatcher rd = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM005);
 				rd.forward(req, resp);
 			} else {
@@ -47,8 +57,7 @@ public class UserInfoController extends HttpServlet {
 				rd.forward(req, resp);
 			}
 		} catch (Exception e) {
-			System.out.println("Class Add user controller:" + e.getMessage());
-			req.setAttribute("message", "User không tồn tại!");
+			System.out.println("User info controller:" + e.getMessage());
 			RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
 			try {
 				rd.forward(req, resp);

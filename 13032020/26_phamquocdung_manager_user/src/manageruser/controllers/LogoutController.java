@@ -20,6 +20,11 @@ import manageruser.utils.Contants;
  *
  */
 public class LogoutController extends HttpServlet {
+	/**
+	 * method get /logout.do
+	 * @param req requset servlet
+	 * @param resp response servlet
+	 */
 	// overright 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {

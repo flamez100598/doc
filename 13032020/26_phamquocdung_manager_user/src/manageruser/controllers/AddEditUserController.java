@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import manageruser.entities.UserInfo;
 import manageruser.entities.mst_group;
 import manageruser.entities.mst_japan;
 import manageruser.logics.MstGroupLogic;
@@ -23,6 +24,7 @@ import manageruser.logics.Tbl_UserLogic;
 import manageruser.logics.impl.MstGroupLogicImpl;
 import manageruser.logics.impl.MstJapanLogicImpl;
 import manageruser.logics.impl.Tbl_UserLogicImpl;
+import manageruser.utils.Common;
 import manageruser.utils.Contants;
 import manageruser.validates.FormValidate;
 import manageruser.validates.Validator;
@@ -84,12 +86,21 @@ public class AddEditUserController extends HttpServlet {
 			String reWritePass = req.getParameter("reWritePass");
 			String nameLevel = req.getParameter("code_level");
 			String total = req.getParameter("total");
+			String userId = req.getParameter("userId");
+			System.out.println(userId);
+			boolean isUpdate = false;
+			if (Validator.isNotNull(userId)) {
+				Tbl_UserLogic tblu = new Tbl_UserLogicImpl();
+				UserInfo userInfo = new UserInfo();
+				userInfo = tblu.getUserById(userId);
+				isUpdate = true;
+			}
 			// check validate
 			listErr = FormValidate.checkFormAddEdit(loginName, group_id, fullName, fullNameKata,
 					yearBirth, monthBirth, dateBirth,
 					email, tel, password, reWritePass, 
 					nameLevel, startYear, startMonth, startDate, 
-					endYear, endMonth, endDate, total);
+					endYear, endMonth, endDate, total, isUpdate);
 			// -- end validate form --
 			if(listErr.isEmpty()) {
 				req.setAttribute("login_name", loginName);
@@ -151,6 +162,37 @@ public class AddEditUserController extends HttpServlet {
 			listAllJapanLevel = mjl.getAllListJapanLevel();
 			req.setAttribute("listAllJapanLevel", listAllJapanLevel);
 			// -- end lấy giá trị của trình độ tiếng nhật
+			String user_id = req.getParameter("userId");
+			req.setAttribute("userId", user_id);
+			if (Validator.isNotNull(user_id)) {
+				Tbl_UserLogic tblu = new Tbl_UserLogicImpl();
+				UserInfo userInfo = new UserInfo();
+				userInfo = tblu.getUserById(user_id);
+				req.setAttribute("userInfo", userInfo);
+				// set time birth day
+				int yearBirth = Common.getYear(userInfo.getBirthday());
+				int monthBirth = Common.getMonth(userInfo.getBirthday());
+				int dateBirth = Common.getDate(userInfo.getBirthday());
+				req.setAttribute("yearBirth", yearBirth);
+				req.setAttribute("monthBirth", monthBirth);
+				req.setAttribute("dateBirth", dateBirth);
+				if (Validator.isNotNull(userInfo.getCode_level())) {
+					// set time start day
+					int startYear = Common.getYear(userInfo.getStart_date());
+					int startMonth = Common.getMonth(userInfo.getStart_date());
+					int startDate = Common.getDate(userInfo.getStart_date());
+					req.setAttribute("startYear", startYear);
+					req.setAttribute("startMonth", startMonth);
+					req.setAttribute("startDate", startDate);
+					// set end date
+					int endYear = Common.getYear(userInfo.getEnd_date());
+					int endMonth = Common.getMonth(userInfo.getEnd_date());
+					int endDate = Common.getMonth(userInfo.getEnd_date());
+					req.setAttribute("endYear", endYear);
+					req.setAttribute("endMonth", endMonth);
+					req.setAttribute("endDate", endDate);
+				}
+			}
 			RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM003);
 			requestDispatcher.forward(req, resp);
 		} catch (Exception e) {

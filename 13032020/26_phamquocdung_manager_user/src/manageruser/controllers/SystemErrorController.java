@@ -30,11 +30,16 @@ public class SystemErrorController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 		try {
-			req.setAttribute("errorSystem", Contants.SYSTEM_ERROR);
+			req.setAttribute("errorSystem", Contants.SYSTEM_ERROR_MESSAGE);
 			RequestDispatcher rd = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ERROR_PAGE);
 			rd.forward(req, resp);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("Class success controller:" + e.getMessage());
+			try {
+				resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

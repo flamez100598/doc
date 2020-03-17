@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -186,5 +187,29 @@ public class Common {
 			}
 		}
 		return str;
+	}
+	/**
+	 * get year by date sql
+	 * @param  d 
+	 * @return int
+	 */
+	public static int getYear(Date d) {
+		return d.getYear() + 1900;
+	}
+	/**
+	 * get month by date sql
+	 * @param  d 
+	 * @return int
+	 */
+	public static int getMonth(Date d) {
+		return d.getMonth() + 1;
+	}
+	/**
+	 * get date by date sql
+	 * @param  d 
+	 * @return int
+	 */
+	public static int getDate(Date d) {
+		return d.getDate();
 	}
 }

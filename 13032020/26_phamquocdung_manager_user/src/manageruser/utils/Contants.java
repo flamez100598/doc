@@ -43,6 +43,8 @@ public class Contants {
 	public static final String ADD_EDIT_FORM_URL = "/addEdit.do";
 	// file path addEdit.do 
 	public static final String ADD_USER = "/addUser.do";
+	// file path addEdit.do 
+	public static final String SUCCESS_DO = "/success.do";
 	// file path database properties
 	public static final String PROPERTIES_DATABASE_PATH = "Database.properties";
 	// file path message error properties
@@ -67,8 +69,6 @@ public class Contants {
 	public static final int RULE_ADMIN = 0;
 	// rule clinet
 	public static final int RULE_CLIENT = 1;
-	// message error system
-	public static final String SYSTEM_ERROR = MessageErrorProperties.getValueByKey("ER015");
 	// get time now
 	static Calendar calendar = Calendar.getInstance();
 	// get year now
@@ -79,4 +79,10 @@ public class Contants {
 	public static final int CURRENT_MONTH = calendar.get(Calendar.MONTH);
 	// get current day
 	public static final int CURRENT_DATE = calendar.get(Calendar.DAY_OF_MONTH);
+	// get message success add user
+	public static final String SUCCESS_MESSAGE_ADD = MessageErrorProperties.getValueByKey("MSG001");
+	// get message success delete user
+	public static final String SUCCESS_MESSAGE_DELETE = MessageErrorProperties.getValueByKey("MSG003");
+	// message error system
+	public static final String SYSTEM_ERROR_MESSAGE = MessageErrorProperties.getValueByKey("ER015");
 }

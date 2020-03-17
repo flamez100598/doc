@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,23 +40,23 @@
 							<tr>
 								<td class="lbl_left">アカウント名:</td>
 								<td align="left"><input type="hidden" value="${login_name}"
-									name="login_name" />${login_name}<input type="hidden"
+									name="login_name" />${fn:escapeXml(login_name)}<input type="hidden"
 									value="${password}" name="password" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">グループ:</td>
 								<td align="left"><input type="hidden" value="${group_id}"
-									name="group_id" />${groupName}</td>
+									name="group_id" />${fn:escapeXml(groupName)}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">氏名:</td>
 								<td align="left"><input type="hidden" value="${fullName}"
-									name="fullName" />${fullName}</td>
+									name="fullName" />${fn:escapeXml(fullName)}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
 								<td align="left"><input type="hidden" value="${nameKata}"
-									name="nameKata" />${nameKata}</td>
+									name="nameKata" />${fn:escapeXml(nameKata)}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">生年月日:</td>
@@ -66,12 +67,12 @@
 							<tr>
 								<td class="lbl_left">メールアドレス:</td>
 								<td align="left"><input type="hidden" value="${email}"
-									name="email" />${email}</td>
+									name="email" />${fn:escapeXml(email)}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">電話番号:</td>
 								<td align="left"><input type="hidden" value="${tel}"
-									name="tel" />${tel}</td>
+									name="tel" />${fn:escapeXml(tel)}</td>
 							</tr>
 							<tr>
 								<th colspan="2"><a href="#">日本語能力</a></th>
@@ -79,7 +80,7 @@
 							<tr>
 								<td class="lbl_left">資格:</td>
 								<td align="left"><input type="hidden" value="${code_level}"
-									name="code_level" />${code_level}</td>
+									name="code_level" />${fn:escapeXml(code_level)}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格交付日:</td>
@@ -96,7 +97,7 @@
 							<tr>
 								<td class="lbl_left">点数:</td>
 								<td align="left"><input type="hidden" value="${total}"
-									name="total" />${total}</td>
+									name="total" />${fn:escapeXml(total)}</td>
 							</tr>
 						</table>
 					</div>

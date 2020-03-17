@@ -1,27 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
-<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@page language="java" import="manageruser.entities.UserInfo"%>
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
+<%@page language="java" import="manageruser.entities.UserInfo" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="../css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/user.js"></script>
+<link href="${pageContext.request.contextPath}/View/css/style.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/View/js/userInfo.js"></script>
 <title>ユーザ管理</title>
 </head>
-<%
-	UserInfo user = new UserInfo();
-	user = (UserInfo) request.getAttribute("user");
-%>
 <body>
 	<!-- Begin vung header -->
 	<z:Header></z:Header>
 	<!-- End vung header --
 	<!-- Begin vung input-->
-	<form action="ADM003.html" method="post" name="inputform">
+	<form action="addEdit.do" method="get" name="inputform">
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -31,56 +29,59 @@
 				</th>
 			</tr>
 			<tr>
+			<input type="hidden" value="${userInfo.getUser_id()}" name="userId" />
 				<td align="left">
 					<div style="padding-left: 100px;">
 						<table border="1" width="70%" class="tbl_input" cellpadding="4"
 							cellspacing="0">
 							<tr>
 								<td class="lbl_left">アカウント名:</td>
-								<td align="left"><%=user.getLogin_name()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getLogin_name())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">グループ:</td>
-								<td align="left"><%=user.getGroup_name()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getGroup_name())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">氏名:</td>
-								<td align="left"><%=user.getFull_name()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getFull_name())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
-								<td align="left"><%=user.getFull_name_kana()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getFull_name_kana())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">生年月日:</td>
-								<td align="left"><%=user.getBirthday()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getBirthday())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">メールアドレス:</td>
-								<td align="left"><%=user.getEmail()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getEmail())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">電話番号:</td>
-								<td align="left"><%=user.getTel()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getTel())}</td>
 							</tr>
 							<tr>
 								<th colspan="2"><a href="#">日本語能力</a></th>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格:</td>
-								<td align="left"><%=user.getName_level()%></td>
+								<td align="left">
+									${fn:escapeXml(userInfo.getName_level())}
+								</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">資格交付日:</td>
-								<td align="left"><%=user.getStart_date()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getStart_date())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">失効日:</td>
-								<td align="left"><%=user.getEnd_date()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getEnd_date())}</td>
 							</tr>
 							<tr>
 								<td class="lbl_left">点数:</td>
-								<td align="left"><%=user.getTotal()%></td>
+								<td align="left">${fn:escapeXml(userInfo.getTotal())}</td>
 							</tr>
 						</table>
 					</div>
@@ -94,7 +95,7 @@
 				<tr>
 					<th width="200px" align="center">&nbsp;</th>
 					<td><input class="btn" type="submit" value="編集" /></td>
-					<td><input class="btn" type="button" value="削除" /></td>
+					<td><input class="btn" type="button" value="削除" onclick="deleteUser()" /></td>
 					<td><input class="btn" type="button" value="戻る"
 						onclick="backPage()" /></td>
 				</tr>
@@ -106,6 +107,18 @@
 	<!-- Begin vung footer -->
 	<z:Footer></z:Footer>
 	<!-- End vung footer -->
+	<script>
+		function deleteUser() {
+			var url = new URL(window.location.href);
+			var query_string = url.search;
+			var search_params = new URLSearchParams(query_string); 
+			search_params.append('isDelete', 'true');
+			url.search = search_params.toString();
+			var new_url = url.toString();
+			console.log(new_url);
+			window.location.href = new_url;
+		}
+	</script>
 </body>
 
 </html>

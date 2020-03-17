@@ -15,6 +15,7 @@ import manageruser.entities.UserInfo;
 import manageruser.entities.tbl_user;
 import manageruser.logics.Tbl_UserLogic;
 import manageruser.utils.Common;
+import manageruser.validates.Validator;
 
 /**
  * user logic implement
@@ -103,7 +104,10 @@ public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
 //		Date startDate = new Date(yearStartDate - 1900, monthStartDate, dateStartDate);
 //		Date endDate = new Date(yearEndDate - 1900, monthEndDate, dateEndDate);
 		String salt = Common.getSalt();
-		int totalParse = Integer.parseInt(total);
+		int totalParse = 0;
+		if (Validator.isNotNull(nameLevel)) {
+			totalParse = Integer.parseInt(total);
+		}
 		String passwordHas = Common.get_SHA_1_SecurePassword(password, salt);
 		int isInsert = userDao.AddUser(loginName, grId, fullName, fullNameKata, 
 				birthDay, email, tel, passwordHas, 
@@ -120,5 +124,14 @@ public class Tbl_UserLogicImpl  implements Tbl_UserLogic {
 	public UserInfo getUserById(String userId) throws SQLException, Exception {
 		int user_id = Integer.parseInt(userId);
 		return userDao.getUserById(user_id);
+	}
+	/**
+	 * delete user by user_id
+	 * @param userId need to delete user
+	 * @return int 0 if delete false
+	 *  1 if delete succes
+	 */
+	public int deleteUserByUserId(int userId) {
+		return userDao.deleteUser(userId);
 	}
 }

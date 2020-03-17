@@ -75,4 +75,11 @@ public interface Tbl_UserLogic {
 	 * @throws Exception 
 	 */
 	UserInfo getUserById(String userId) throws SQLException, Exception;
+	/**
+	 * delete user by user_id
+	 * @param userId need to delete user
+	 * @return int 0 if delete false
+	 *  1 if delete succes
+	 */
+	int deleteUserByUserId(int userId);
 }

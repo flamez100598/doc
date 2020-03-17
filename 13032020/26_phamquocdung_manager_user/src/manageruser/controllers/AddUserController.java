@@ -21,6 +21,7 @@ import manageruser.logics.Tbl_UserLogic;
 import manageruser.logics.impl.MstGroupLogicImpl;
 import manageruser.logics.impl.Tbl_UserLogicImpl;
 import manageruser.utils.Contants;
+import manageruser.utils.MessageErrorProperties;
 import manageruser.validates.Validator;
 
 /**
@@ -80,23 +81,23 @@ public class AddUserController extends HttpServlet {
 				endDate = Date.valueOf(endDateParam);
 			}
 			String total = req.getParameter("total");
-
-			System.out.println(isAddUser);
 			if (isAddUser) {
 				Tbl_UserLogic tblUl = new Tbl_UserLogicImpl();
 				int rowInset = tblUl.AddUser(loginName, groupId, fullName, nameKata, 
 							bd, email, tel, password, nameLevel, 
 							startDate, endDate, total);
-				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM006);
+				req.setAttribute("message", Contants.SUCCESS_MESSAGE_ADD);
+				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.SUCCESS_DO);
 				requestDispatcher.forward(req, resp);
 				return;
 			}
 
 		} catch (Exception e) {
 			System.out.println("Class Add user controller:" + e.getMessage());
+			RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
 			try {
-				resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
-			} catch (IOException e1) {
+				rd.forward(req, resp);
+			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}
 		}

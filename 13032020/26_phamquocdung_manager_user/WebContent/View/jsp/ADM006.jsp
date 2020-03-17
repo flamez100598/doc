@@ -8,8 +8,10 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="./View/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./View/js/user.js"></script>
+<link href="${pageContext.request.contextPath}/View/css/style.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/View/js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
 
@@ -29,8 +31,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="center" colspan="2">ユーザの登録が完了しました。 or ユーザの更新が完了しました。
-					or ユーザの削除が完了しました。</td>
+				<td align="center" colspan="2">${message}</td>
 			</tr>
 			<tr>
 				<td align="center" colspan="2">
@@ -39,7 +40,7 @@
 			</tr>
 			<tr>
 				<td align="center" colspan="2"><input class="btn" type="submit"
-					value="OK" onclick="" /></td>
+					value="OK" /></td>
 			</tr>
 		</table>
 	</form>

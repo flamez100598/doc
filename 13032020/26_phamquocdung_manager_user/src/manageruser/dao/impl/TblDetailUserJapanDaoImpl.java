@@ -65,5 +65,52 @@ public class TblDetailUserJapanDaoImpl extends BaseDAOImpl implements TblDetailU
 			return insertDetail;
 		}
 	}
-
+	/**
+	 * delete detail user japan by user_id
+	 * @param userId
+	 * @return int > 0 if delete success 
+	 * 0 if delete false
+	 */
+	public int deleteDetailUserJapan(int userId) {
+		int checkDelte = 0;
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				// query delete user
+				String sql = "DELETE FROM tbl_detail_user_japan WHERE user_id = ?";
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, userId);
+				setAutoCommit(false);
+				checkDelte = ps.executeUpdate();
+				if (checkDelte != 0) {
+					setAutoCommit(true);
+				} else {
+					//rollback data
+					rollback();
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
+			
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return checkDelte;
+		}
+	}
 }

@@ -20,11 +20,13 @@ public class UserInfo {
 	private String email;
 	private String tel;
 	private String name_level;
+	private String code_level;
 	private Date end_date;
 	private int total;
 	private int detail_user_japan_id;
 	private Date start_date;
 	private String full_name_kana;
+	private int group_id;
 	/**
 	 * @return the birthday
 	 */
@@ -180,5 +182,29 @@ public class UserInfo {
 	 */
 	public void setFull_name_kana(String full_name_kana) {
 		this.full_name_kana = full_name_kana;
+	}
+	/**
+	 * @return the group_id
+	 */
+	public int getGroup_id() {
+		return group_id;
+	}
+	/**
+	 * @param group_id the group_id to set
+	 */
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
+	}
+	/**
+	 * @return the code_level
+	 */
+	public String getCode_level() {
+		return code_level;
+	}
+	/**
+	 * @param code_level the code_level to set
+	 */
+	public void setCode_level(String code_level) {
+		this.code_level = code_level;
 	}
 }

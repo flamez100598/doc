@@ -67,6 +67,7 @@ public interface Tbl_UserDao {
 	 * @param endDate endDate thêm mới
 	 * @param total total nhập từ bàn phím
 	 * @return int 1 is insert success
+	 * 0 if insert false
 	 */
 	int AddUser(String loginName, int groupId, String fullName, String fullNameKata,
 			Date birthDay, String email, String tel, String password, String nameLevel, 
@@ -79,6 +80,19 @@ public interface Tbl_UserDao {
 	 * @throws Exception 
 	 */
 	UserInfo getUserById(int userId) throws SQLException, Exception;
+	/**
+	 * get user by login_name
+	 * @param userId check for updateUser
+	 * @param loginName loginName need to get user
+	 * @return tbl_user
+	 */
 	tbl_user getUserByLoginName(int userId, String loginName);
+	/**
+	 * delete user by user_id
+	 * @param userId need to delete user
+	 * @return int 0 if delete false
+	 *  1 if delete succes
+	 */
+	int deleteUser(int userId);
 	
 }

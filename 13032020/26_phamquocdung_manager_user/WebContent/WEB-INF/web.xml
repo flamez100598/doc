@@ -56,6 +56,14 @@
 		<url-pattern>/addEdit.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>successPage</servlet-name>
+		<servlet-class>manageruser.controllers.SuccessController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>successPage</servlet-name>
+		<url-pattern>/success.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>userInfo</servlet-name>
 		<servlet-class>manageruser.controllers.UserInfoController</servlet-class>
 	</servlet>
@@ -73,6 +81,7 @@
 		<url-pattern>/addEdit.do</url-pattern>
 		<url-pattern>/addUser.do</url-pattern>
 		<url-pattern>/userInfo.do</url-pattern>
+		<url-pattern>/error.do</url-pattern>
 		<url-pattern>/View/jsp/ADM002.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM003.jsp</url-pattern>
 		<url-pattern>/View/jsp/ADM004.jsp</url-pattern>

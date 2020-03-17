@@ -43,18 +43,20 @@ public class FormValidate {
 	public static ArrayList<String> checkFormAddEdit(String loginName, String groupId, String fullName, String fullNameKata,
 			int yearBirth, int monthBirth, int dateBirth, String email, String tel, String password, String reWritePass, String nameLevel, 
 			int yearStartDate, int monthStartDate, int dateStartDate,
-			int yearEndDate, int monthEndDate, int dateEndDate, String total) {
+			int yearEndDate, int monthEndDate, int dateEndDate, String total, boolean isUpdate) {
 		ArrayList<String> listErr = new ArrayList<String>();
 		// -- validate login_name
-		if (Validator.isNull(loginName)) {
-			listErr.add(MessageErrorProperties.getValueByKey("ER001_LOGIN_NAME"));
-		} else {
-			char[] c = loginName.toCharArray();
-			if (Validator.isDigit(c[0]) && !Validator.isDigitAndChar(fullName)) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER019"));
-			} 
-			if (c.length > 15 || c.length < 4) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER007_LOGIN_NAME"));
+		if (!isUpdate) {
+			if (Validator.isNull(loginName)) {
+				listErr.add(MessageErrorProperties.getValueByKey("ER001_LOGIN_NAME"));
+			} else {
+				char[] c = loginName.toCharArray();
+				if (Validator.isDigit(c[0]) && !Validator.isDigitAndChar(fullName)) {
+					listErr.add(MessageErrorProperties.getValueByKey("ER019"));
+				} 
+				if (c.length > 15 || c.length < 4) {
+					listErr.add(MessageErrorProperties.getValueByKey("ER007_LOGIN_NAME"));
+				}
 			}
 		}
 		// -- end validate login_name
@@ -124,20 +126,22 @@ public class FormValidate {
 		// -- end validate tel
 		// -- end validate katakana name
 		// -- validate password
-		if (Validator.isNull(password)) {
-			listErr.add(MessageErrorProperties.getValueByKey("ER001_PASSWORD"));
-		} else {
-			if (Validator.isHalfsize(password)) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER008_PASSWORD"));
+		if (!isUpdate) {
+			if (Validator.isNull(password)) {
+				listErr.add(MessageErrorProperties.getValueByKey("ER001_PASSWORD"));
+			} else {
+				if (Validator.isHalfsize(password)) {
+					listErr.add(MessageErrorProperties.getValueByKey("ER008_PASSWORD"));
+				}
+				if (password.length() > 15 || password.length() < 4) {
+					listErr.add(MessageErrorProperties.getValueByKey("ER007_PASSWORD"));
+				}
+				// -- validate re-password
+				if (!Common.CompareString(password, reWritePass)) {
+					listErr.add(MessageErrorProperties.getValueByKey("ER001_RE_PASSWORD"));
+				} 
+				// -- end validate re-password
 			}
-			if (password.length() > 15 || password.length() < 4) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER007_PASSWORD"));
-			}
-			// -- validate re-password
-			if (!Common.CompareString(password, reWritePass)) {
-				listErr.add(MessageErrorProperties.getValueByKey("ER001_RE_PASSWORD"));
-			} 
-			// -- end validate re-password
 		}
 		// -- end validate password
 		if (Validator.isNotNull(nameLevel)) {

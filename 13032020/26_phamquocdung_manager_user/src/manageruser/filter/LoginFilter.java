@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -35,8 +36,7 @@ public class LoginFilter implements Filter {
 	 * Hàm xử lí logic kiểm tra login
 	 */
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
 		try {
 			// Ép kiểu HttpServlet
 			HttpServletRequest req = (HttpServletRequest) request;
@@ -64,7 +64,12 @@ public class LoginFilter implements Filter {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
 			// Chuyển đến trang system error
-			resp.sendRedirect(req.getContextPath() + Contants.URL_ERROR_DO);
+			RequestDispatcher rd = req.getRequestDispatcher(Contants.URL_ERROR_DO);
+			try {
+				rd.forward(req, resp);
+			} catch (ServletException | IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 	@Override

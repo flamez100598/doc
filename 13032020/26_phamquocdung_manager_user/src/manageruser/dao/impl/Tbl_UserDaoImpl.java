@@ -442,8 +442,8 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			if (con != null) {
 				// query lấy giá trị UserInfo
 				StringBuilder sql = new StringBuilder();
-				sql.append("SELECT tu.full_name_kana, tu.login_name, tu.user_id, tu.full_name, birthday, mg.group_name, email, tduj.start_date, tel, mj.name_level, tduj.end_date, tduj.total, tduj.detail_user_japan_id FROM tbl_user tu");
-				sql.append(" INNER JOIN mst_group mg ON tu.group_id=mg.group_id");
+				sql.append("SELECT mj.code_level, tu.group_id, tu.full_name_kana, tu.login_name, tu.user_id, tu.full_name, birthday, mg.group_name, email, tduj.start_date, tel, mj.name_level, tduj.end_date, tduj.total, tduj.detail_user_japan_id FROM tbl_user tu");
+				sql.append(" INNER JOIN mst_group mg ON tu.group_id = mg.group_id");
 				sql.append(" LEFT JOIN tbl_detail_user_japan tduj ON tduj.user_id = tu.user_id");
 				sql.append(" LEFT JOIN mst_japan mj ON mj.code_level = tduj.code_level");
 				sql.append(" WHERE tu.rule = 1 ");
@@ -480,6 +480,10 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 					user.setLogin_name(rs.getString("login_name"));
 					// luư giá trị full_name_kana
 					user.setFull_name_kana(rs.getString("full_name_kana"));
+					// luư giá trị group_id
+					user.setGroup_id(rs.getInt("group_id"));
+					// luư giá trị code_level
+					user.setCode_level(rs.getString("code_level"));
 				}
 				// kiểm tra nếu kết nối = null
 			} else {
@@ -499,6 +503,12 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			return user;
 		}
 	}
+	/**
+	 * get user by login_name
+	 * @param userId check for updateUser
+	 * @param loginName loginName need to get user
+	 * @return tbl_user
+	 */
 	@Override
 	public tbl_user getUserByLoginName(int userId, String loginName) {
 		userId = 0;
@@ -536,6 +546,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				System.out.println("connect fail");
 			}
 		} catch (SQLException e1) {
+
 			// in ra ngoại lệ
 			e1.printStackTrace();
 			// xử lý ngoại lệ
@@ -546,6 +557,56 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			closeConnect();
 			// trả về biến user
 			return user;
+		}
+	}
+	/**
+	 * delete user by user_id
+	 * @param userId need to delete user
+	 * @return int 0 if delete false
+	 *  1 if delete succes
+	 */
+	public int deleteUser(int userId) {
+		int checkDelte = 0;
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				TblDetailUserJapanDao tblDUJ = new TblDetailUserJapanDaoImpl();
+				tblDUJ.deleteDetailUserJapan(userId);	
+				// query delete user
+				String sql = "DELETE FROM tbl_user WHERE user_id = ?";
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql);
+				ps.setInt(1, userId);
+				setAutoCommit(false);
+				checkDelte = ps.executeUpdate();
+				if (checkDelte != 0) {
+					setAutoCommit(true);
+				} else {
+					//rollback data
+					rollback();
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
+			
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return checkDelte;
 		}
 	}
 
