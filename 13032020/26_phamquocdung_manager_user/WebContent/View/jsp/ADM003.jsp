@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="./View/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./View/js/user.js"></script>
+<link href="${pageContext.request.contextPath}/View/css/style.css"
+	rel="stylesheet" type="text/css" />
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/View/js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
 <%
@@ -29,9 +32,8 @@
 	<!-- End vung header -->
 
 	<!-- Begin vung input-->
-	<form action="${pageContext.request.contextPath}/addEdit.do"
+	<form action="${pageContext.request.contextPath}/addEditForm.do<c:if test="${userInfo.getUser_id() ne null}">?userId=${userInfo.getUser_id()}</c:if>"
 		method="post" name="inputform">
-		<input type="hidden" name="userId" value="${userInfo.getUser_id()}" />
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -45,10 +47,10 @@
 						<c:forEach items="${listErr}" var="mes">
 							<p style="margin: 0">
 								<c:out value="${mes}" />
-								&nbsp;
+
 							</p>
 						</c:forEach>
-						&nbsp;
+
 					</div>
 				</td>
 			</tr>
@@ -67,18 +69,18 @@
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> グループ:</td>
-								<td align="left"><select name="group_id" <c:if test="${userInfo.getGroup_id() ne null }">id="group_id"</c:if>>
+								<td align="left"><select name="group_id"
+									<c:if test="${userInfo.getGroup_id() ne null }">id="group_id"</c:if>>
 										<option value="0">選択してください</option>
 										<c:set var="groupId" value="<%=groupId%>" scope="request"></c:set>
 										<c:forEach items="${listAllGroup}" var="item">
 											<c:if test="${item.group_id != groupId}">
 												<option value="${item.group_id}"><c:out
-														value="${item.group_name}" /></option>
+														value="${fn:escapeXml(item.group_name)}" /></option>
 											</c:if>
-											<c:if
-												test="${item.group_id eq groupId}">
+											<c:if test="${item.group_id eq groupId}">
 												<option value="${item.group_id}" selected><c:out
-														value="${item.group_name}" /></option>
+														value="${fn:escapeXml(item.group_name)}" /></option>
 											</c:if>
 										</c:forEach>
 								</select> <span>&nbsp;&nbsp;&nbsp;</span></td>
@@ -86,14 +88,16 @@
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> 氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="fullName" value="${userInfo.getFull_name()}" size="30"
+									name="fullName"
+									value="${fn:escapeXml(userInfo.getFull_name())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="nameKata" value="${userInfo.getFull_name_kana()}" size="30"
+									name="nameKata"
+									value="${fn:escapeXml(userInfo.getFull_name_kana())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
@@ -127,14 +131,14 @@
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> メールアドレス:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="email" value="${userInfo.getEmail()}" size="30"
-									onfocus="this.style.borderColor='#0066ff';"
+									name="email" value="${fn:escapeXml(userInfo.getEmail())}"
+									size="30" onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font>電話番号:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="tel" value="${userInfo.getTel()}" size="30"
+									name="tel" value="${fn:escapeXml(userInfo.getTel())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
@@ -153,40 +157,40 @@
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
-								<th align="left" colspan="2"><a href="#">日本語能力</a></th>
+								<th align="left" colspan="2"><a href="#"
+									onclick="toggleJp();">日本語能力</a></th>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格:</td>
-								<td align="left"><select name="code_level" <c:if test="${userInfo.getCode_level() ne null }">id="code_level"</c:if>>
+								<td align="left"><select name="code_level"
+									<c:if test="${userInfo.getCode_level() ne null }">id="code_level"</c:if>>
 										<option value="">選択してください</option>
 										<c:set var="codeLevel" value="<%=codeLevel%>" scope="request"></c:set>
 										<c:forEach items="${listAllJapanLevel}" var="item">
-											<c:if test="${userInfo.getCode_level() eq null }"> 
-												<c:if
-													test="${item.code_level eq codeLevel}">
+											<c:if test="${userInfo.getCode_level() eq null }">
+												<c:if test="${item.code_level eq codeLevel}">
 													<option value="${item.code_level}" selected><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 												<c:if test="${item.code_level != codeLevel}">
 													<option value="${item.code_level}"><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 											</c:if>
-											<c:if test="${userInfo.getCode_level() ne null }"> 
-												<c:if
-													test="${item.code_level eq userInfo.getCode_level()}">
+											<c:if test="${userInfo.getCode_level() ne null }">
+												<c:if test="${item.code_level eq userInfo.getCode_level()}">
 													<option value="${item.code_level}" selected><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 												<c:if test="${item.code_level != codeLevel}">
 													<option value="${item.code_level}"><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 											</c:if>
 										</c:forEach>
 								</select></td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格交付日:</td>
 								<td align="left"><select name="startYear" id="startYear">
 										<c:forEach var="i" begin="1900" end="${currentYear - 1}">
@@ -213,7 +217,7 @@
 										</c:forEach>
 								</select>日</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">失効日:</td>
 								<td align="left"><select name="endYear" id="endYear">
 										<c:forEach var="i" begin="1900" end="${currentYear}">
@@ -240,11 +244,11 @@
 										</c:forEach>
 								</select>日</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">点数:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="total" value="${userInfo.getTotal()}" size="5"
-									onfocus="this.style.borderColor='#0066ff';"
+									name="total" value="${fn:escapeXml(userInfo.getTotal())}"
+									size="5" onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 						</table>
@@ -270,8 +274,14 @@
 	<!-- Begin vung footer -->
 	<z:Footer></z:Footer>
 	<!-- End vung footer -->
+	<script>
+
+    var jpLevel = document.getElementsByClassName("jp-level");
+    for(var i = 0; i < jpLevel.length ; i++){
+        jpLevel[i].style.visibility  = 'hidden';
+    }
 	<c:if test="${userInfo ne null}">
-		<script>
+
 		function checkLoginName() {
 			var url_string = window.location.href;
 			var url = new URL(url_string);
@@ -286,6 +296,7 @@
 					groupItems.value = ${userInfo.getGroup_id()};
 				}
 				var codeLevelItems = document.getElementById("code_level");
+				<c:if test="${userInfo.getCode_level() ne null}">
 				if (codeLevelItems != null) {
 					document.getElementById("startYear").value = ${startYear};
 					document.getElementById("startMonth").value = ${startMonth};
@@ -294,14 +305,16 @@
 					document.getElementById("endMonth").value = ${endMonth};
 					document.getElementById("endDate").value = ${endDate};
 				}
+				</c:if>
 				document.getElementById("yearBirth").value = ${yearBirth};
 				document.getElementById("monthBirth").value = ${monthBirth};
 				document.getElementById("dateBirth").value = ${dateBirth};
 			}
 		}
 
-	</script>
+
 	</c:if>
+	</script>
 </body>
 
 </html>

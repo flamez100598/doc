@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,9 +20,9 @@
 	<z:Header></z:Header>
 	<!-- End vung header --
 	<!-- Begin vung input-->
-	<form
-		action="${pageContext.request.contextPath}/addUser.do?isAddUser=true"
+	<form action="${pageContext.request.contextPath}/addEditUser.do"
 		method="post" name="inputform" onsubmit="handleClick()">
+		<input type="hidden" value="${userId }" name="user_id" />
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -40,8 +41,8 @@
 							<tr>
 								<td class="lbl_left">アカウント名:</td>
 								<td align="left"><input type="hidden" value="${login_name}"
-									name="login_name" />${fn:escapeXml(login_name)}<input type="hidden"
-									value="${password}" name="password" /></td>
+									name="login_name" />${fn:escapeXml(login_name)}<input
+									type="hidden" value="${password}" name="password" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">グループ:</td>
@@ -75,26 +76,26 @@
 									name="tel" />${fn:escapeXml(tel)}</td>
 							</tr>
 							<tr>
-								<th colspan="2"><a href="#">日本語能力</a></th>
+								<th colspan="2"><a href="#" onclick="toggleJp();">日本語能力</a></th>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格:</td>
 								<td align="left"><input type="hidden" value="${code_level}"
 									name="code_level" />${fn:escapeXml(code_level)}</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格交付日:</td>
 								<td align="left"><input type="hidden"
 									value="${startDateCodeLevel}" name="startDateCodeLevel" /> <fmt:formatDate
 										pattern="dd-MM-yyyy" value="${startDateCodeLevel}" /></td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">失効日:</td>
 								<td align="left"><input type="hidden"
 									value="${endDateCodeLevel}" name="endDateCodeLevel" /> <fmt:formatDate
 										pattern="dd-MM-yyyy" value="${endDateCodeLevel}" /></td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">点数:</td>
 								<td align="left"><input type="hidden" value="${total}"
 									name="total" />${fn:escapeXml(total)}</td>
@@ -127,6 +128,12 @@
 		function handleClick() {
 			document.getElementById("submit-btn").disabled = true;
 		}
+		<c:if test="${code_level eq null}" >
+	    var jpLevel = document.getElementsByClassName("jp-level");
+        for(var i = 0; i < jpLevel.length ; i++){
+            jpLevel[i].style.visibility  = 'hidden';
+        }
+		</c:if>
 	</script>
 </body>
 

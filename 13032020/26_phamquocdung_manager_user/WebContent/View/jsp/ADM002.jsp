@@ -193,16 +193,9 @@
 				</c:if>
 				<c:forEach items="${listPaging}" var="item">
 					<c:if test="${item == currentPage}">
-						<td class="lbl_paging"><a style="text-decoration: none"
-							href="${pageContext.request.contextPath}/listUser.do?
-							keyWord=${keyWord}
-							&group_id=${groupId}
-							&currentPage=${item}
-							&sortType=${sortType}
-							&sortByFullName=${sortByFullName}
-							&sortByCodeLevel=${DESC}
-							&sortByEndDate=${sortByEndDate}"><c:out
-									value="${item}" /> </a> &nbsp;</td>
+						<td class="lbl_paging"><a style="text-decoration: none">
+								<c:out value="${item}" />
+						</a> &nbsp;</td>
 					</c:if>
 					<c:if test="${item != currentPage}">
 						<td class="lbl_paging"><a
@@ -237,7 +230,7 @@
 </body>
 <script>
 	function openAddEditForm () {
-		window.location.href = "${pageContext.request.contextPath}/addEdit.do";
+		window.location.href = "${pageContext.request.contextPath}/addEditForm.do";
 	}
 </script>
 </html>

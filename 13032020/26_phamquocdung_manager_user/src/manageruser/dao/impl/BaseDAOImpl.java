@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import manageruser.dao.BaseDao;
+import manageruser.entities.mst_group;
 import manageruser.utils.DatabaseProperties;
 
 /**
@@ -32,6 +33,8 @@ public abstract class BaseDAOImpl implements BaseDao {
 	private String driver = DatabaseProperties.getValueByKey("driver");
 	// khai báo biến connection
 	protected Connection connect;
+	// khai bao biến db lấy giá trị database từ Database.Properties
+	protected String db = DatabaseProperties.getValueByKey("database");
 	/**
 	 * Hàm mở kết nối đến DB 
 	 * 

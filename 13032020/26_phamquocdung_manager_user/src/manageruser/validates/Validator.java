@@ -239,8 +239,13 @@ public class Validator {
 	 * @return true if email not exist
 	 * false if email exist
 	 */
-	public static boolean checkExistEmail(String str) {
+	public static boolean checkExistEmail(String str, int userId) {
 		Tbl_UserDao tud = new Tbl_UserDaoImpl();
+		if (userId != 0) {
+			if (tud.checkExistEmail(str, userId) > 0) {
+				return false;
+			}
+		}
 		if (tud.checkExistEmail(str, 0) > 0) {
 			return false;
 		}
@@ -254,12 +259,16 @@ public class Validator {
 	 */
 	public static boolean checkFormatEmail(String str) {
 		char[] c = str.toCharArray();
+		// check exist '@'
 		int d = 0;
+		// check exist '.'
+		int d2 = 0;
 		for (int i = 0; i < c.length - 1; i++) {
 			if (!isDigit(c[i]) && !isChar(c[i]) && c[i] != '@') {
 				return false;
 			}
 			if (c[i] == '@') {
+				d++;
 				int j = i + 1;
 				while (c[j] != '.' && j < c.length - 2) { 
 					if (!isDigit(c[j]) && !isChar(c[j])) {
@@ -270,6 +279,7 @@ public class Validator {
 				i = j;
 			}
 			if (c[i] == '.') {
+				d2++;
 				for (int j = i + 1; j < c.length; j++) {
 					if (!isDigit(c[j]) && !isChar(c[j])) {
 						return false;
@@ -277,6 +287,9 @@ public class Validator {
 				}
 				break;
 			}
+		}
+		if (d != 1 && d2 != 1) {
+			return false;
 		}
 		return true;
 	}

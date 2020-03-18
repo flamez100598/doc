@@ -179,8 +179,8 @@ public class Common {
 	 * @return str replace
 	 */
 	public static String replaceWhiteCard(String str) {	
-		String[] symbol = {"!", "@", "$", "%" , "&", "<" , ">", ":"};
-		String[] symbolReplace = {"#!", "#@", "#$", "#%" , "#&", "#<" , "#>", "#:"};
+		String[] symbol = {"!", "@", "$", "%" , "&", "<" , ">", ":", "="};
+		String[] symbolReplace = {"#!", "#@", "#$", "#%" , "#&", "#<" , "#>", "#:", "#="};
 		if (!"".equals(str)) {
 			for (int i = 0; i < symbol.length; i++) {
 				str = str.replaceAll("/" + symbol[i] + "/", symbolReplace[i]);

@@ -30,6 +30,40 @@ import manageruser.dao.Tbl_UserDao;
  */
 public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	/**
+	 * @return all list columns from db
+	 */
+	@Override
+	public ArrayList<String> getAllListColmns() {
+		ArrayList<String> listColsInDb = new ArrayList<String>();
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// Nếu chuỗi kết nối khác null
+			if (con != null) {
+				StringBuilder sql = new StringBuilder();
+				sql.append("SELECT COLUMN_NAME FROM information_schema.columns ");
+				sql.append(" WHERE table_schema = ?;");
+				PreparedStatement ps = connect.prepareStatement(sql.toString());
+				ps.setString(1, db);
+				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
+				ResultSet rs = ps.executeQuery();
+				int index = 0;
+				while (rs.next()) {
+					listColsInDb.add(rs.getString("COLUMN_NAME"));
+					index++;
+				}
+			}
+		} catch (SQLException e) {
+			// xử lý ngoại lệ khi xảy ra lỗi
+			System.out.println("BaseDaoImpl.getAllListColmns: " + e.getMessage());
+		} finally {
+			closeConnect();
+			return listColsInDb;
+		}
+	}
+	/**
 	 * get user by login_name
 	 * @param username username need check
 	 * @return tbl_userEntity
@@ -107,7 +141,10 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
 				StringBuilder sql = new StringBuilder();
-				sql.append("select  count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id = mg.group_id where tu.rule = 1 ");
+				sql.append("select  count(*) from tbl_user tu INNER JOIN mst_group mg ON tu.group_id = mg.group_id ");
+				sql.append(" LEFT JOIN tbl_detail_user_japan tduj ON tduj.user_id = tu.user_id ");
+				sql.append(" LEFT JOIN mst_japan mj ON mj.code_level = tduj.code_level ");
+				sql.append(" where tu.rule = 1 ");
 				sql.append(" AND tu.full_name LIKE ? ESCAPE '#'");
 				if (groupId == 0) {
 					sql.append(" AND tu.group_id <> ? ");
@@ -165,24 +202,26 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 		fullN.append("%");
 		// end-- khởi tạo giá trị fullName
 		// begin-- khởi tạo các trường được sort
-		String[] listS = Contants.LIST_SORT;
+		ArrayList<String> listS = getAllListColmns();
 		ArrayList<SortField> listSort = new ArrayList<SortField>();
-		for (int i = 0; i < listS.length; i++) {
-			SortField sf = new SortField();
-			if (i == 0) {
-				sf.setSortName(" tu.full_name ");
-				sf.setSortType(sortByFullName);
-				listSort.add(sf);
-			}
-			if (i == 1) {
-				sf.setSortName(" mj.name_level ");
-				sf.setSortType(sortByCodeLevel);
-				listSort.add(sf);
-			}
-			if (i == 2) {
-				sf.setSortName(" tduj.end_date ");
-				sf.setSortType(sortByEndDate);
-				listSort.add(sf);
+		if (listS.contains(sortType)) {
+			for (int i = 0; i < 3; i++) {
+				SortField sf = new SortField();
+				if (i == 0) {
+					sf.setSortName(" tu.full_name ");
+					sf.setSortType(sortByFullName);
+					listSort.add(sf);
+				}
+				if (i == 1) {
+					sf.setSortName(" mj.name_level ");
+					sf.setSortType(sortByCodeLevel);
+					listSort.add(sf);
+				}
+				if (i == 2) {
+					sf.setSortName(" tduj.end_date ");
+					sf.setSortType(sortByEndDate);
+					listSort.add(sf);
+				}
 			}
 		}
 		// end-- khởi tạo các trường được sort
@@ -209,22 +248,24 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				} else {
 					sql.append(" AND mg.group_id = ? ");
 				}
-				sql.append(" ORDER BY ");
-				// begin-- sắp xếp thứ tự sort ưu tiên theo sortType
-				for (int i = 0 ; i < listSort.size(); i++) {
-					if (listSort.get(i).getSortName().contains(sortType)) {
+				if (listS.contains(sortType)) {
+					sql.append(" ORDER BY ");
+					// begin-- sắp xếp thứ tự sort ưu tiên theo sortType
+					for (int i = 0 ; i < listSort.size(); i++) {
+						if (listSort.get(i).getSortName().contains(sortType)) {
+							sql.append(listSort.get(i).getSortName());
+							sql.append(listSort.get(i).getSortType());
+							sql.append(",");
+							listSort.remove(i);
+							break;
+						}
+					}
+					for (int i = 0 ; i < listSort.size(); i++) {
 						sql.append(listSort.get(i).getSortName());
 						sql.append(listSort.get(i).getSortType());
-						sql.append(",");
-						listSort.remove(i);
-						break;
-					}
-				}
-				for (int i = 0 ; i < listSort.size(); i++) {
-					sql.append(listSort.get(i).getSortName());
-					sql.append(listSort.get(i).getSortType());
-					if (i != listSort.size() - 1) {
-						sql.append(",");
+						if (i != listSort.size() - 1) {
+							sql.append(",");
+						}
 					}
 				}
 				// end-- sắp xếp thứ tự sort ưu tiên theo sortType
@@ -300,16 +341,16 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
 				StringBuilder sql = new StringBuilder();
-				sql.append("SELECT email FROM tbl_user WHERE email = ?;");
+				sql.append("SELECT email FROM tbl_user WHERE email = ?");
 				if (userId != 0) {
-					sql.append(" AND user_id <> ?");
+					sql.append(" AND user_id <> ?;");
 				}
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql.toString());
 				//gắn param cho query
 				ps.setString(1, email);
 				if (userId != 0) {
-					ps.setInt(1, userId);
+					ps.setInt(2, userId);
 				}
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
@@ -565,6 +606,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 * @return int 0 if delete false
 	 *  1 if delete succes
 	 */
+	@Override
 	public int deleteUser(int userId) {
 		int checkDelte = 0;
 		// bắt lỗi
@@ -596,7 +638,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				System.out.println("connect fail");
 			}
 		} catch (SQLException e1) {
-			
+
 			// in ra ngoại lệ
 			e1.printStackTrace();
 			// xử lý ngoại lệ
@@ -609,5 +651,69 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			return checkDelte;
 		}
 	}
+	/**
+	 * update user 
+	 * @param userId user_id cuar user can update
+	 * @param groupId groupId chọn từ ô pulldown
+	 * @param fullName fullName nhập từ bàn phím
+	 * @param fullNameKata fullNameKata nhập từ bàn phím
+	 * @param birthDay birthDay thêm mới
+	 * @param email email nhập từ bàn phím
+	 * @param tel tel nhập từ bàn phím
+	 * @return int 1 is insert success
+	 * 0 if insert false
+	 */
+	@Override
+	public int updateUser(int userId, int groupId, String fullName, String fullNameKata,
+			Date birthDay, String email, String tel) {
+		int isUpdate = 0;
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				// query delete user
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE tbl_user SET group_id = ?, full_name = ?, email = ?,");
+				sql.append(" full_name_kata = ?, tel = ?, birthDay = ? WHERE user_id = ?");
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int index = 1;
+				ps.setInt(index, groupId);
+				ps.setString(++index, fullName);
+				ps.setString(++index, email);
+				ps.setString(++index, fullNameKata);
+				ps.setString(++index, tel);
+				ps.setDate(++index, birthDay);
+				ps.setInt(++index, userId);
+				setAutoCommit(false);
+				isUpdate = ps.executeUpdate();
+				if (isUpdate != 0) {
+					setAutoCommit(true);
+				} else {
+					//rollback data
+					rollback();
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
 
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return isUpdate;
+		}
+	}
 }

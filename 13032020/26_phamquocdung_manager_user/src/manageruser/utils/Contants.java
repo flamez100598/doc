@@ -40,9 +40,9 @@ public class Contants {
 	// file path  System_Error.jsp
 	public static final String URL_ERROR_PAGE = "/System_Error.jsp";
 	// file path addEdit.do 
-	public static final String ADD_EDIT_FORM_URL = "/addEdit.do";
+	public static final String ADD_EDIT_FORM_URL = "/addEditForm.do";
 	// file path addEdit.do 
-	public static final String ADD_USER = "/addUser.do";
+	public static final String ADD_EDIT_USER = "/addEditUser.do";
 	// file path addEdit.do 
 	public static final String SUCCESS_DO = "/success.do";
 	// file path database properties

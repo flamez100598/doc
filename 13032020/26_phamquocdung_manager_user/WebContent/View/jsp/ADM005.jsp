@@ -3,7 +3,8 @@
 <%@page language="java" import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
-<%@page language="java" import="manageruser.entities.UserInfo" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page language="java" import="manageruser.entities.UserInfo"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,7 +12,7 @@
 <link href="${pageContext.request.contextPath}/View/css/style.css"
 	rel="stylesheet" type="text/css" />
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/View/js/userInfo.js"></script>
+	src="${pageContext.request.contextPath}/View/js/user.js"></script>
 <title>ユーザ管理</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
 	<z:Header></z:Header>
 	<!-- End vung header --
 	<!-- Begin vung input-->
-	<form action="addEdit.do" method="get" name="inputform">
+	<form action="${pageContext.request.contextPath}/addEditForm.do" method="get" name="inputform">
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
@@ -29,7 +30,7 @@
 				</th>
 			</tr>
 			<tr>
-			<input type="hidden" value="${userInfo.getUser_id()}" name="userId" />
+				<input type="hidden" value="${userInfo.getUser_id()}" name="userId" />
 				<td align="left">
 					<div style="padding-left: 100px;">
 						<table border="1" width="70%" class="tbl_input" cellpadding="4"
@@ -63,23 +64,22 @@
 								<td align="left">${fn:escapeXml(userInfo.getTel())}</td>
 							</tr>
 							<tr>
-								<th colspan="2"><a href="#">日本語能力</a></th>
+								<th colspan="2"><a href="#" onclick="toggleJp();">日本語能力</a></th>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格:</td>
-								<td align="left">
-									${fn:escapeXml(userInfo.getName_level())}
+								<td align="left">${fn:escapeXml(userInfo.getName_level())}
 								</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">資格交付日:</td>
 								<td align="left">${fn:escapeXml(userInfo.getStart_date())}</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">失効日:</td>
 								<td align="left">${fn:escapeXml(userInfo.getEnd_date())}</td>
 							</tr>
-							<tr>
+							<tr class="jp-level">
 								<td class="lbl_left">点数:</td>
 								<td align="left">${fn:escapeXml(userInfo.getTotal())}</td>
 							</tr>
@@ -95,7 +95,8 @@
 				<tr>
 					<th width="200px" align="center">&nbsp;</th>
 					<td><input class="btn" type="submit" value="編集" /></td>
-					<td><input class="btn" type="button" value="削除" onclick="deleteUser()" /></td>
+					<td><input class="btn" type="button" value="削除"
+						onclick="deleteUser()" /></td>
 					<td><input class="btn" type="button" value="戻る"
 						onclick="backPage()" /></td>
 				</tr>
@@ -116,8 +117,17 @@
 			url.search = search_params.toString();
 			var new_url = url.toString();
 			console.log(new_url);
-			window.location.href = new_url;
+			var isDelete = confirm("削除しますが、よろしいでしょうか。");
+			if (isDelete) {
+				window.location.href = new_url;	
+			}
 		}
+		<c:if test="${userInfo.getName_level() eq null}" >
+		    var jpLevel = document.getElementsByClassName("jp-level");
+	        for(var i = 0; i < jpLevel.length ; i++){
+	            jpLevel[i].style.visibility  = 'hidden';
+	        }
+		</c:if>
 	</script>
 </body>
 
