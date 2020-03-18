@@ -28,5 +28,13 @@ public interface TblDetailUserJapanDao {
 	 * 0 if delete false
 	 */
 	int deleteDetailUserJapan(int userId);
-	
+	/**
+	 * update detail user japan
+	 * @param userId user_id cần thêm vào bảng
+	 * @param nameLevel nameLevel chọn từ pulldown hạng mục trình độ tiếng nhật
+	 * @param startDate startDate thêm mới
+	 * @param endDate endDate thêm mới
+	 * @param total total nhập từ bàn phím
+	 */
+	int updateDetailUserJapan(int userId, String nameLevel, Date startDate, Date endDate, int total);
 }

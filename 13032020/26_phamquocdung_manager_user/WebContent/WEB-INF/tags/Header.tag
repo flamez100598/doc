@@ -4,7 +4,7 @@
 		<table>
 			<tr>
 				<td width="80%"><img
-					src="${pageContext.request.contextPath}/View/images/logo-manager-user.gift"
+					src="${pageContext.request.contextPath}/View/images/logo-manager-user.gif"
 					alt="Luvina" />
 				<td>
 				<td align="left"><a

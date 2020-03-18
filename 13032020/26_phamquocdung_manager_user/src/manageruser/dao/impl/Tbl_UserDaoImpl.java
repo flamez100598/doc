@@ -300,16 +300,16 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			// kiểm tra nếu kết nối khác null
 			if (con != null) {
 				StringBuilder sql = new StringBuilder();
-				sql.append("SELECT email FROM tbl_user WHERE email = ?;");
+				sql.append("SELECT email FROM tbl_user WHERE email = ?");
 				if (userId != 0) {
-					sql.append(" AND user_id <> ?");
+					sql.append(" AND user_id <> ?;");
 				}
 				// tạo statement thực hiện query
 				PreparedStatement ps = con.prepareStatement(sql.toString());
 				//gắn param cho query
 				ps.setString(1, email);
 				if (userId != 0) {
-					ps.setInt(1, userId);
+					ps.setInt(2, userId);
 				}
 				// khởi tạo biến resultSet để lưu giá trị sau khi thực thi câu query
 				ResultSet rs = ps.executeQuery();
@@ -565,6 +565,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 	 * @return int 0 if delete false
 	 *  1 if delete succes
 	 */
+	@Override
 	public int deleteUser(int userId) {
 		int checkDelte = 0;
 		// bắt lỗi
@@ -596,7 +597,7 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 				System.out.println("connect fail");
 			}
 		} catch (SQLException e1) {
-			
+
 			// in ra ngoại lệ
 			e1.printStackTrace();
 			// xử lý ngoại lệ
@@ -609,5 +610,69 @@ public class Tbl_UserDaoImpl extends BaseDAOImpl implements Tbl_UserDao {
 			return checkDelte;
 		}
 	}
+	/**
+	 * update user 
+	 * @param userId user_id cuar user can update
+	 * @param groupId groupId chọn từ ô pulldown
+	 * @param fullName fullName nhập từ bàn phím
+	 * @param fullNameKata fullNameKata nhập từ bàn phím
+	 * @param birthDay birthDay thêm mới
+	 * @param email email nhập từ bàn phím
+	 * @param tel tel nhập từ bàn phím
+	 * @return int 1 is insert success
+	 * 0 if insert false
+	 */
+	@Override
+	public int updateUser(int userId, int groupId, String fullName, String fullNameKata,
+			Date birthDay, String email, String tel) {
+		int isUpdate = 0;
+		// bắt lỗi
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				// query delete user
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE tbl_user SET group_id = ?, full_name = ?, email = ?,");
+				sql.append(" full_name_kata = ?, tel = ?, birthDay = ? WHERE user_id = ?");
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int index = 1;
+				ps.setInt(index, groupId);
+				ps.setString(++index, fullName);
+				ps.setString(++index, email);
+				ps.setString(++index, fullNameKata);
+				ps.setString(++index, tel);
+				ps.setDate(++index, birthDay);
+				ps.setInt(++index, userId);
+				setAutoCommit(false);
+				isUpdate = ps.executeUpdate();
+				if (isUpdate != 0) {
+					setAutoCommit(true);
+				} else {
+					//rollback data
+					rollback();
+				}
+				// kiểm tra nếu kết nối = null
+			} else {
+				// in ra console thông báo lỗi
+				System.out.println("connect fail");
+			}
+		} catch (SQLException e1) {
 
+			// in ra ngoại lệ
+			e1.printStackTrace();
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return isUpdate;
+		}
+	}
 }

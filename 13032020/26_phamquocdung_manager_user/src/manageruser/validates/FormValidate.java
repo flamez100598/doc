@@ -43,7 +43,7 @@ public class FormValidate {
 	public static ArrayList<String> checkFormAddEdit(String loginName, String groupId, String fullName, String fullNameKata,
 			int yearBirth, int monthBirth, int dateBirth, String email, String tel, String password, String reWritePass, String nameLevel, 
 			int yearStartDate, int monthStartDate, int dateStartDate,
-			int yearEndDate, int monthEndDate, int dateEndDate, String total, boolean isUpdate) {
+			int yearEndDate, int monthEndDate, int dateEndDate, String total, int userId, boolean isUpdate) {
 		ArrayList<String> listErr = new ArrayList<String>();
 		// -- validate login_name
 		if (!isUpdate) {
@@ -104,7 +104,7 @@ public class FormValidate {
 				listErr.add(MessageErrorProperties.getValueByKey("ER006_EMAIL"));
 			}		
 			// check exist
-			if (!Validator.checkExistEmail(email)) {
+			if (!Validator.checkExistEmail(email, userId)) {
 				listErr.add(MessageErrorProperties.getValueByKey("ER003_EMAIL"));
 			}
 			// check format

@@ -52,7 +52,7 @@ public interface Tbl_UserDao {
 	 */
 	int checkExistEmail(String email, int UserId);
 	/**
-	 * Validate from add or edit 
+	 * add user 
 	 * @param loginName login_name nhập từ bàn phím
 	 * @param groupId groupId chọn từ ô pulldown
 	 * @param fullName fullName nhập từ bàn phím
@@ -61,7 +61,6 @@ public interface Tbl_UserDao {
 	 * @param email email nhập từ bàn phím
 	 * @param tel tel nhập từ bàn phím
 	 * @param password password nhập từ bàn phím
-	 * @param reWritePass nhập lại của hạng mục password nhập từ bàn phím
 	 * @param nameLevel nameLevel chọn từ pulldown hạng mục trình độ tiếng nhật
 	 * @param startDate startDate thêm mới
 	 * @param endDate endDate thêm mới
@@ -94,5 +93,18 @@ public interface Tbl_UserDao {
 	 *  1 if delete succes
 	 */
 	int deleteUser(int userId);
-	
+	/**
+	 * update user 
+	 * @param user_id user id user được update
+	 * @param groupId groupId chọn từ ô pulldown
+	 * @param fullName fullName nhập từ bàn phím
+	 * @param fullNameKata fullNameKata nhập từ bàn phím
+	 * @param birthDay birthDay thêm mới
+	 * @param email email nhập từ bàn phím
+	 * @param tel tel nhập từ bàn phím
+	 * @return int 1 is insert success
+	 * 0 if insert false
+	 */
+	int updateUser(int userId, int groupId, String fullName, String fullNameKata,
+			Date birthDay, String email, String tel);
 }

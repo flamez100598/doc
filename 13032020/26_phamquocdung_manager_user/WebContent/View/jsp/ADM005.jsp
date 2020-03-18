@@ -116,7 +116,10 @@
 			url.search = search_params.toString();
 			var new_url = url.toString();
 			console.log(new_url);
-			window.location.href = new_url;
+			var isDelete = confirm("削除しますが、よろしいでしょうか。");
+			if (isDelete) {
+				window.location.href = new_url;	
+			}
 		}
 	</script>
 </body>

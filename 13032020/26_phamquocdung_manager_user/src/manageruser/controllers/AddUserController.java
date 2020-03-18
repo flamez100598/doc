@@ -39,8 +39,10 @@ public class AddUserController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			boolean isAddUser = false;
-			Object addUser = req.getParameter("isAddUser");
-			if (addUser != null) {
+			String userId = req.getParameter("user_id");
+			System.out.println("user_id" + userId);
+			// if add user
+			if (Validator.isNull(userId)) {
 				isAddUser = true;
 			}
 			MstGroupLogic mstGrLg = new MstGroupLogicImpl();
@@ -49,11 +51,6 @@ public class AddUserController extends HttpServlet {
 			int grId = Integer.parseInt(groupId);
 			mstGr = mstGrLg.getGroupById(grId);
 			req.setAttribute("groupName", mstGr.getGroup_name());
-			if (!isAddUser) {			
-				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.FILE_JSP_PATH + Contants.URL_ADM004);
-				requestDispatcher.forward(req, resp);
-				return;
-			}	
 			String loginName = req.getParameter("login_name");
 			String fullName = req.getParameter("fullName");
 			String nameKata = req.getParameter("nameKata");
@@ -62,7 +59,6 @@ public class AddUserController extends HttpServlet {
 			String password = req.getParameter("password");
 			String nameLevel = req.getParameter("code_level");
 			String birthDay = req.getParameter("birthDay");
-			System.out.println(birthDay);
 			Date bd = null;
 			Date startDate = null;
 			Date endDate = null;
@@ -89,7 +85,6 @@ public class AddUserController extends HttpServlet {
 				req.setAttribute("message", Contants.SUCCESS_MESSAGE_ADD);
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.SUCCESS_DO);
 				requestDispatcher.forward(req, resp);
-				return;
 			}
 
 		} catch (Exception e) {

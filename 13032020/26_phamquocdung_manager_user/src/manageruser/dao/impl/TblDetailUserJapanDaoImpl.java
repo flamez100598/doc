@@ -71,6 +71,7 @@ public class TblDetailUserJapanDaoImpl extends BaseDAOImpl implements TblDetailU
 	 * @return int > 0 if delete success 
 	 * 0 if delete false
 	 */
+	@Override
 	public int deleteDetailUserJapan(int userId) {
 		int checkDelte = 0;
 		// bắt lỗi
@@ -113,4 +114,59 @@ public class TblDetailUserJapanDaoImpl extends BaseDAOImpl implements TblDetailU
 			return checkDelte;
 		}
 	}
+	/**
+	 * update detail user japan
+	 * @param userId user_id cần thêm vào bảng
+	 * @param nameLevel nameLevel chọn từ pulldown hạng mục trình độ tiếng nhật
+	 * @param startDate startDate thêm mới
+	 * @param endDate endDate thêm mới
+	 * @param total total nhập từ bàn phím
+	 */
+	@Override
+	public int updateDetailUserJapan(int userId, String nameLevel, Date startDate, Date endDate, int total) {
+		int updateDetail = 0;
+		try {
+			// mở kết nối
+			openConnect();
+			// lấy giá trị connection sau khi kết nối
+			Connection con = (Connection) getConnect();
+			// kiểm tra nếu kết nối khác null
+			if (con != null) {
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE tbl_detail_user_japan SET user_id = ?, code_level = ?, start_date = ?, end_date = ?, total = ?");
+				sql.append(" WHERE user_id = ?;");
+				// tạo statement thực hiện query
+				PreparedStatement ps = con.prepareStatement(sql.toString());
+				int index = 1;
+				ps.setInt(index, userId);
+				ps.setString(++index, nameLevel);
+				ps.setDate(++index, startDate);
+				ps.setDate(++index, endDate);
+				ps.setInt(++index, total);
+				ps.setInt(++index, userId);
+				updateDetail = ps.executeUpdate();
+				if (updateDetail == 0) {
+					setAutoCommit(false);
+					//rollback data
+					rollback();
+				} 
+			} else {
+				System.out.println("Connect fail!");
+			}
+		} catch (SQLException e1) {
+			//rollback data
+			rollback();
+			// in ra ngoại lệ
+			System.out.println("Lỗi insert user:" + e1.getMessage());
+			// xử lý ngoại lệ
+			throw e1;
+			// giá trị cuối cùng trả về
+		} finally {
+			// đóng kết nối
+			closeConnect();
+			// trả về biến user
+			return updateDetail;
+		}
+	}
+		
 }

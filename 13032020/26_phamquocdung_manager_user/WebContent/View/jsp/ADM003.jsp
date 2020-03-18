@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page language="java" import="java.util.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -73,12 +74,12 @@
 										<c:forEach items="${listAllGroup}" var="item">
 											<c:if test="${item.group_id != groupId}">
 												<option value="${item.group_id}"><c:out
-														value="${item.group_name}" /></option>
+														value="${fn:escapeXml(item.group_name)}" /></option>
 											</c:if>
 											<c:if
 												test="${item.group_id eq groupId}">
 												<option value="${item.group_id}" selected><c:out
-														value="${item.group_name}" /></option>
+														value="${fn:escapeXml(item.group_name)}" /></option>
 											</c:if>
 										</c:forEach>
 								</select> <span>&nbsp;&nbsp;&nbsp;</span></td>
@@ -86,14 +87,14 @@
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> 氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="fullName" value="${userInfo.getFull_name()}" size="30"
+									name="fullName" value="${fn:escapeXml(userInfo.getFull_name())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left">カタカナ氏名:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="nameKata" value="${userInfo.getFull_name_kana()}" size="30"
+									name="nameKata" value="${fn:escapeXml(userInfo.getFull_name_kana())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
@@ -127,14 +128,14 @@
 							<tr>
 								<td class="lbl_left"><font color="red">*</font> メールアドレス:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="email" value="${userInfo.getEmail()}" size="30"
+									name="email" value="${fn:escapeXml(userInfo.getEmail())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
 							<tr>
 								<td class="lbl_left"><font color="red">*</font>電話番号:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="tel" value="${userInfo.getTel()}" size="30"
+									name="tel" value="${fn:escapeXml(userInfo.getTel())}" size="30"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>
@@ -165,22 +166,22 @@
 												<c:if
 													test="${item.code_level eq codeLevel}">
 													<option value="${item.code_level}" selected><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 												<c:if test="${item.code_level != codeLevel}">
 													<option value="${item.code_level}"><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 											</c:if>
 											<c:if test="${userInfo.getCode_level() ne null }"> 
 												<c:if
 													test="${item.code_level eq userInfo.getCode_level()}">
 													<option value="${item.code_level}" selected><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 												<c:if test="${item.code_level != codeLevel}">
 													<option value="${item.code_level}"><c:out
-															value="${item.name_level}" /></option>
+															value="${fn:escapeXml(item.name_level)}" /></option>
 												</c:if>
 											</c:if>
 										</c:forEach>
@@ -243,7 +244,7 @@
 							<tr>
 								<td class="lbl_left">点数:</td>
 								<td align="left"><input class="txBox" type="text"
-									name="total" value="${userInfo.getTotal()}" size="5"
+									name="total" value="${fn:escapeXml(userInfo.getTotal())}" size="5"
 									onfocus="this.style.borderColor='#0066ff';"
 									onblur="this.style.borderColor='#aaaaaa';" /></td>
 							</tr>

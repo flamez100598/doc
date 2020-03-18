@@ -88,21 +88,25 @@ public class AddEditUserController extends HttpServlet {
 			String total = req.getParameter("total");
 			String userId = req.getParameter("userId");
 			System.out.println(userId);
+			int user_id = 0;
 			boolean isUpdate = false;
 			if (Validator.isNotNull(userId)) {
 				Tbl_UserLogic tblu = new Tbl_UserLogicImpl();
 				UserInfo userInfo = new UserInfo();
 				userInfo = tblu.getUserById(userId);
+				user_id = Integer.parseInt(userId);
 				isUpdate = true;
 			}
+			System.out.println(user_id);
 			// check validate
 			listErr = FormValidate.checkFormAddEdit(loginName, group_id, fullName, fullNameKata,
 					yearBirth, monthBirth, dateBirth,
 					email, tel, password, reWritePass, 
 					nameLevel, startYear, startMonth, startDate, 
-					endYear, endMonth, endDate, total, isUpdate);
+					endYear, endMonth, endDate, total, user_id, isUpdate);
 			// -- end validate form --
 			if(listErr.isEmpty()) {
+				req.setAttribute("userId", userId);
 				req.setAttribute("login_name", loginName);
 				req.setAttribute("group_id", group_id);
 				req.setAttribute("fullName", fullName);
@@ -118,12 +122,6 @@ public class AddEditUserController extends HttpServlet {
 				req.setAttribute("startDateCodeLevel", startDateCodeLevel);
 				req.setAttribute("endDateCodeLevel", endDateCodeLevel);
 				req.setAttribute("total", total);
-//				Tbl_UserLogic tblUl = new Tbl_UserLogicImpl();
-//				tblUl.AddUser(loginName, group_id, fullName, fullNameKata, 
-//						yearBirth, monthBirth, dateBirth, 
-//						email, tel, password, reWritePass, nameLevel, 
-//						startYear, startMonth, startDate, 
-//						endYear, endMonth, endDate, total);
 				RequestDispatcher requestDispatcher = req.getRequestDispatcher(Contants.ADD_USER);
 				requestDispatcher.forward(req, resp);
 			} else {

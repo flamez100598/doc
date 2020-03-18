@@ -20,8 +20,9 @@
 	<!-- End vung header --
 	<!-- Begin vung input-->
 	<form
-		action="${pageContext.request.contextPath}/addUser.do?isAddUser=true"
+		action="${pageContext.request.contextPath}/addUser.do"
 		method="post" name="inputform" onsubmit="handleClick()">
+		<input type="hidden" value="${userId }" name="user_id" />
 		<table class="tbl_input" border="0" width="75%" cellpadding="0"
 			cellspacing="0">
 			<tr>
